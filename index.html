@@ -206,6 +206,62 @@
   }
 
   /* ── ACADEMICS GRID ── */
+  .institution-panel {
+    background: linear-gradient(135deg, rgba(92,92,255,0.08) 0%, rgba(13,13,24,0.96) 100%);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    padding: 22px 26px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .institution-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--indigo), var(--cyan));
+  }
+  .institution-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .institution-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 0.8px;
+    line-height: 1.15;
+  }
+  .institution-course {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 14px;
+    color: var(--cyan);
+    margin-top: 6px;
+    letter-spacing: 0.6px;
+  }
+  .institution-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .institution-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text);
+    background: rgba(0,0,0,0.22);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 5px 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
   .academics-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -253,6 +309,16 @@
   }
   .academic-ru span {
     color: var(--indigo);
+  }
+  .academic-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
   }
 
   /* ── ODS Section ── */
@@ -550,6 +616,7 @@
   @media (max-width: 768px) {
     .wrap { padding: 32px 20px 60px; }
     h1 { font-size: 30px; }
+    .institution-name { font-size: 21px; }
     .academics-grid, .ods-grid { grid-template-columns: 1fr; }
     .product-components { grid-template-columns: 1fr; }
     .section-title { font-size: 20px; }
@@ -579,16 +646,28 @@
       <h2 class="section-title">Identificação</h2>
       <div class="section-line"></div>
     </div>
+    <div class="institution-panel brackets">
+      <div class="institution-label">Instituição e Curso</div>
+      <div class="institution-name">Uninter — Centro Universitário Internacional</div>
+      <div class="institution-course">Bacharelado de Física</div>
+      <div class="institution-meta">
+        <span class="institution-chip">Projeto Interdisciplinar</span>
+        <span class="institution-chip">Ensino de Física</span>
+        <span class="institution-chip">2026</span>
+      </div>
+    </div>
     <div class="academics-grid">
       <div class="academic-card brackets">
         <div class="academic-avatar">MP</div>
         <div class="academic-name">Michelle Di Loraine Brito Peixoto</div>
         <div class="academic-ru">RU <span>5614521</span></div>
+        <div class="academic-role">Acadêmica do Bacharelado de Física</div>
       </div>
       <div class="academic-card brackets">
         <div class="academic-avatar">CM</div>
         <div class="academic-name">Cleyton Duda Macedo</div>
         <div class="academic-ru">RU <span>5704345</span></div>
+        <div class="academic-role">Acadêmico do Bacharelado de Física</div>
       </div>
     </div>
   </section>
@@ -714,7 +793,7 @@
   <!-- ═══════════════ FOOTER ═══════════════ -->
   <footer class="footer">
     <div class="footer-line"></div>
-    Projeto Interdisciplinar · 2026
+    Uninter — Centro Universitário Internacional · Bacharelado de Física · Projeto Interdisciplinar · 2026
   </footer>
 
 </div>
