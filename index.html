@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto Interdisciplinar — Ensino de Física e Conforto Térmico</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #05050a;
+    --bg2:       #0b0b14;
+    --bg3:       #10101c;
+    --bg-card:   #0d0d18;
+    --border:    #1e1e30;
+    --border-strong: #2a2a40;
+    --indigo:    #5c5cff;
+    --indigo2:   #4040cc;
+    --indigo-dim:#2a2a6a;
+    --gold:      #f0b429;
+    --red:       #ff3c3c;
+    --green:     #2ecc71;
+    --cyan:      #38c8f0;
+    --ods4:      #c5192d;
+    --ods11:     #fd9d24;
+    --text:      #c8cce8;
+    --text-dim:  #6a6e90;
+    --text-bright:#e8eaff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Ambient background ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(92,92,255,0.08) 0%, transparent 35%),
+      radial-gradient(circle at 85% 80%, rgba(240,180,40,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(56,200,240,0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(92,92,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(92,92,255,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    position: relative;
+  }
+  .header-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: rgba(13,13,24,0.6);
+    margin-bottom: 24px;
+  }
+  .header-tag::before {
+    content: '';
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--indigo);
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    box-shadow: 0 0 10px var(--indigo);
+    animation: pulse-dot 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 0.6; transform: scale(0.85); }
+    50%     { opacity: 1;   transform: scale(1.0); }
+  }
+  h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--text-bright);
+    letter-spacing: 1.5px;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  h1 .accent {
+    color: var(--indigo);
+    text-shadow: 0 0 24px rgba(92,92,255,0.4);
+  }
+  .subtitle {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 16px;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 1px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .header-divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--indigo), transparent);
+    margin: 28px auto 0;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    margin-bottom: 40px;
+  }
+  .section-hdr {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--indigo);
+    border: 1px solid var(--indigo-dim);
+    padding: 4px 10px;
+    background: rgba(92,92,255,0.06);
+    letter-spacing: 1px;
+  }
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    flex: 1;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-strong), transparent);
+    max-width: 200px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--indigo);
+  }
+
+  /* Corner brackets */
+  .brackets::after, .brackets::before {
+    content: '';
+    position: absolute;
+    width: 14px; height: 14px;
+    border-color: var(--indigo-dim);
+    border-style: solid;
+    pointer-events: none;
+  }
+  .brackets::before {
+    top: 8px; right: 8px;
+    border-width: 1px 1px 0 0;
+  }
+  .brackets::after {
+    bottom: 8px; right: 8px;
+    border-width: 0 1px 1px 0;
+  }
+
+  /* ── ACADEMICS GRID ── */
+  .academics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .academic-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px 24px;
+    position: relative;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .academic-card:hover {
+    border-color: var(--indigo-dim);
+    transform: translateY(-2px);
+  }
+  .academic-avatar {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--indigo) 0%, var(--indigo2) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 14px;
+    box-shadow: 0 0 16px rgba(92,92,255,0.3);
+  }
+  .academic-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .academic-ru {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+  }
+  .academic-ru span {
+    color: var(--indigo);
+  }
+
+  /* ── ODS Section ── */
+  .ods-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .ods-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ods-card.primary { border-color: rgba(197,25,45,0.35); }
+  .ods-card.primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--ods4);
+  }
+  .ods-card.related { border-color: rgba(253,157,36,0.35); }
+  .ods-card.related::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--ods11);
+  }
+  .ods-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .ods-num {
+    width: 52px; height: 52px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .ods-card.primary .ods-num { background: var(--ods4); }
+  .ods-card.related .ods-num { background: var(--ods11); }
+  .ods-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .ods-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-bright);
+    line-height: 1.2;
+  }
+  .ods-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ── Tema card ── */
+  .theme-card {
+    background: linear-gradient(135deg, rgba(92,92,255,0.06) 0%, rgba(56,200,240,0.04) 100%);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 26px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .theme-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--indigo), var(--cyan));
+  }
+  .theme-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .theme-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .theme-sub {
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .theme-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .theme-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    background: rgba(56,200,240,0.08);
+    border: 1px solid rgba(56,200,240,0.25);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── Product card ── */
+  .product-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--gold);
+  }
+  .product-desc {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+    margin-bottom: 22px;
+  }
+  .product-components {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+  .component {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 14px 14px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .component:hover { border-color: var(--gold); }
+  .component-icon {
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+  .component-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-bright);
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+  }
+  .component-detail {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+  .product-complement {
+    background: rgba(92,92,255,0.06);
+    border: 1px solid var(--indigo-dim);
+    border-radius: 3px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .complement-icon {
+    width: 48px; height: 48px;
+    background: var(--indigo);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    box-shadow: 0 0 14px rgba(92,92,255,0.3);
+  }
+  .complement-text {
+    flex: 1;
+  }
+  .complement-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--indigo);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .complement-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 3px;
+  }
+  .complement-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ── CTA Simulator Button ── */
+  .cta-section {
+    margin-top: 48px;
+    text-align: center;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: linear-gradient(135deg, var(--indigo) 0%, var(--indigo2) 100%);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border-radius: 3px;
+    box-shadow: 0 0 24px rgba(92,92,255,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 36px rgba(92,92,255,0.5);
+  }
+  .cta-btn:hover::before { transform: translateX(100%); }
+  .cta-arrow {
+    font-size: 18px;
+    transition: transform 0.25s;
+  }
+  .cta-btn:hover .cta-arrow { transform: translateX(4px); }
+  .cta-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-top: 14px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 64px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1.2px;
+  }
+  .footer-line {
+    width: 60px;
+    height: 1px;
+    background: var(--indigo-dim);
+    margin: 0 auto 16px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .wrap { padding: 32px 20px 60px; }
+    h1 { font-size: 30px; }
+    .academics-grid, .ods-grid { grid-template-columns: 1fr; }
+    .product-components { grid-template-columns: 1fr; }
+    .section-title { font-size: 20px; }
+    .product-complement { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="header">
+    <div class="header-tag">Projeto Interdisciplinar</div>
+    <h1>Ensino de Física e <span class="accent">Conforto Térmico</span></h1>
+    <p class="subtitle">
+      Uma proposta de educação científica acessível para escolas públicas,
+      conectando termodinâmica, sustentabilidade e habitabilidade urbana.
+    </p>
+    <div class="header-divider"></div>
+  </header>
+
+  <!-- ═══════════════ ACADÊMICOS ═══════════════ -->
+  <section>
+    <div class="section-hdr">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Identificação</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="academics-grid">
+      <div class="academic-card brackets">
+        <div class="academic-avatar">MP</div>
+        <div class="academic-name">Michelle Di Loraine Brito Peixoto</div>
+        <div class="academic-ru">RU <span>5614521</span></div>
+      </div>
+      <div class="academic-card brackets">
+        <div class="academic-avatar">CM</div>
+        <div class="academic-name">Cleyton Duda Macedo</div>
+        <div class="academic-ru">RU <span>5704345</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ODS ═══════════════ -->
+  <section>
+    <div class="section-hdr">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Objetivos de Desenvolvimento Sustentável</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="ods-grid">
+      <div class="ods-card primary">
+        <div class="ods-header">
+          <div class="ods-num">4</div>
+          <div>
+            <div class="ods-label">ODS Principal</div>
+            <div class="ods-name">Educação de Qualidade</div>
+          </div>
+        </div>
+        <p class="ods-desc">
+          Assegurar a educação inclusiva, equitativa e de qualidade,
+          promovendo oportunidades de aprendizagem ao longo da vida para todos.
+        </p>
+      </div>
+      <div class="ods-card related">
+        <div class="ods-header">
+          <div class="ods-num">11</div>
+          <div>
+            <div class="ods-label">ODS Relacionada</div>
+            <div class="ods-name">Cidades e Comunidades Sustentáveis</div>
+          </div>
+        </div>
+        <p class="ods-desc">
+          Tornar cidades inclusivas, seguras, resilientes e sustentáveis,
+          com habitações adequadas e infraestrutura urbana eficiente.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ TEMÁTICA ═══════════════ -->
+  <section>
+    <div class="section-hdr">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Temática</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="theme-card brackets">
+      <div class="theme-eyebrow">Linha de Investigação</div>
+      <h3 class="theme-title">Ensino de Física</h3>
+      <p class="theme-sub">
+        Com foco em termodinâmica e experimentos de baixo custo aplicáveis
+        ao contexto da educação básica pública.
+      </p>
+      <div class="theme-tags">
+        <span class="theme-tag">Termodinâmica</span>
+        <span class="theme-tag">Experimentação</span>
+        <span class="theme-tag">Baixo Custo</span>
+        <span class="theme-tag">Escola Pública</span>
+        <span class="theme-tag">Pedagogia Ativa</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PRODUTO ═══════════════ -->
+  <section>
+    <div class="section-hdr">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Produto</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="product-card brackets">
+      <p class="product-desc">
+        <strong style="color:var(--text-bright)">Kit de experimentos de física de baixo custo</strong>
+        destinado a escolas públicas, projetado para demonstrar conceitos
+        de absorção térmica e transferência de calor através de materiais acessíveis
+        e procedimentos reprodutíveis em sala de aula.
+      </p>
+
+      <div class="product-components">
+        <div class="component">
+          <div class="component-icon">📄</div>
+          <div class="component-name">Folhas A4</div>
+          <div class="component-detail">Diferentes cores</div>
+        </div>
+        <div class="component">
+          <div class="component-icon">⬛</div>
+          <div class="component-name">Base Isolante</div>
+          <div class="component-detail">Suporte experimental</div>
+        </div>
+        <div class="component">
+          <div class="component-icon">🌡️</div>
+          <div class="component-name">Termômetro</div>
+          <div class="component-detail">De contato</div>
+        </div>
+      </div>
+
+      <div class="product-complement">
+        <div class="complement-icon">🏠</div>
+        <div class="complement-text">
+          <div class="complement-label">Complemento Digital</div>
+          <div class="complement-title">Simulador Web Interativo</div>
+          <div class="complement-desc">
+            Aplicação para análise da incidência solar e variação térmica
+            em unidades habitacionais, permitindo experimentação virtual
+            com parâmetros como cor das paredes, área construída e sistemas de resfriamento.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ CTA ═══════════════ -->
+  <div class="cta-section">
+    <a href="thermal-sim.html" class="cta-btn">
+      <span>Acessar Simulador</span>
+      <span class="cta-arrow">→</span>
+    </a>
+    <div class="cta-hint">Experimento interativo · análise térmica em tempo real</div>
+  </div>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer">
+    <div class="footer-line"></div>
+    Projeto Interdisciplinar · 2026
+  </footer>
+
+</div>
+
+</body>
+</html>

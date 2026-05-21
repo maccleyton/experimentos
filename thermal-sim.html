@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projeto Interdisciplinar</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #05050a;
+    --bg2:       #0b0b14;
+    --bg3:       #10101c;
+    --border:    #1e1e30;
+    --indigo:    #5c5cff;
+    --indigo2:   #4040cc;
+    --indigo-dim:#2a2a6a;
+    --gold:      #f0b429;
+    --red:       #ff3c3c;
+    --green:     #2ecc71;
+    --cyan:      #38c8f0;
+    --text:      #c8cce8;
+    --text-dim:  #5a5e80;
+    --text-bright:#e8eaff;
+    --panel-bg:  rgba(11,11,20,0.92);
+    --glow:      0 0 18px rgba(92,92,255,0.25);
+    --glow-red:  0 0 18px rgba(255,60,60,0.4);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 12px;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .hdr {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0c0c18 0%, var(--bg2) 100%);
+    position: relative;
+    z-index: 10;
+  }
+  .hdr::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--indigo) 30%, var(--indigo) 70%, transparent);
+    opacity: 0.4;
+  }
+  .hdr-logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--indigo);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 14px rgba(92,92,255,0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hdr-logo::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--indigo);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--indigo);
+    animation: pulse-dot 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 0.6; transform: scale(0.85); }
+    50%     { opacity: 1;   transform: scale(1.0); }
+  }
+  .hdr-logo span { color: var(--text-dim); font-weight: 400; }
+  .hdr-sub {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-left: 12px;
+    border-left: 1px solid var(--border);
+    margin-left: 2px;
+  }
+  .hdr-sep { flex: 1; }
+  .hdr-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    letter-spacing: 1px;
+    background: rgba(0,0,0,0.3);
+  }
+  .hdr-tag.live { color: var(--green); border-color: rgba(46,204,113,0.35); }
+  .hdr-tag.warp { color: var(--gold);  border-color: rgba(240,180,40,0.35); }
+
+  /* ── MAIN GRID ── */
+  .main {
+    display: grid;
+    grid-template-columns: 268px 1fr 248px;
+    grid-template-rows: 1fr;
+    height: calc(100vh - 41px);
+    gap: 0;
+  }
+
+  .panel {
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .panel:last-child { border-right: none; border-left: 1px solid var(--border); }
+  .panel::-webkit-scrollbar { width: 3px; }
+  .panel::-webkit-scrollbar-track { background: var(--bg); }
+  .panel::-webkit-scrollbar-thumb { background: var(--indigo-dim); border-radius: 2px; }
+
+  .panel-hdr {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .panel-hdr::before {
+    content: '';
+    width: 3px; height: 13px;
+    background: var(--indigo);
+    border-radius: 2px;
+  }
+  .panel-hdr-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-bright);
+  }
+
+  .section { padding: 9px 12px; border-bottom: 1px solid var(--border); }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  /* ── INPUTS ── */
+  .input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 5px;
+  }
+  .input-lbl {
+    font-size: 11px;
+    color: var(--text);
+    min-width: 70px;
+  }
+  .num-input {
+    width: 72px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-bright);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 3px 6px;
+    text-align: right;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .num-input:focus { border-color: var(--indigo); }
+  .num-input-unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    min-width: 26px;
+  }
+
+  /* ── CMYK SLIDERS ── */
+  .cmyk-wrap { display: flex; flex-direction: column; gap: 5px; }
+  .cmyk-row { display: flex; flex-direction: column; gap: 3px; }
+  .cmyk-header { display: flex; justify-content: space-between; align-items: center; }
+  .cmyk-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .cmyk-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-bright);
+  }
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--text-bright);
+    box-shadow: 0 0 5px rgba(92,92,255,0.6);
+    cursor: pointer;
+  }
+  #sl-c { background: linear-gradient(to right, #05050a, #00b4d8); }
+  #sl-m { background: linear-gradient(to right, #05050a, #d000a0); }
+  #sl-y { background: linear-gradient(to right, #05050a, #ffd000); }
+  #sl-k { background: linear-gradient(to right, #d4d4d4, #050505); }
+
+  /* ── COLOR PREVIEW ── */
+  .color-preview-wrap {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 7px;
+  }
+  .color-swatch {
+    width: 32px; height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .color-info { flex: 1; }
+  .color-hex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-bright);
+    margin-bottom: 3px;
+  }
+  .absorb-bar-wrap { display: flex; align-items: center; gap: 6px; }
+  .absorb-bar-bg {
+    flex: 1; height: 4px;
+    background: var(--bg3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .absorb-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(to right, var(--green), var(--gold), var(--red));
+    transition: width 0.3s;
+  }
+  .absorb-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    min-width: 30px;
+    text-align: right;
+  }
+
+  /* ── TOGGLES / COOLING ── */
+  .cooling-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin-bottom: 6px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .cooling-block.active { border-color: var(--indigo); }
+  .cooling-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .cooling-icon { font-size: 14px; }
+  .cooling-name {
+    flex: 1;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+  .toggle {
+    width: 30px; height: 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle.on { background: var(--indigo); border-color: var(--indigo); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    transition: left 0.2s, background 0.2s;
+  }
+  .toggle.on::after { left: 16px; background: #fff; }
+  .cooling-detail {
+    display: none;
+    padding: 6px 10px 8px;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.2);
+  }
+  .cooling-block.active .cooling-detail { display: block; }
+
+  /* ── CANVAS STAGE ── */
+  .stage {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+  }
+  #scene-canvas {
+    flex: 1;
+    display: block;
+    width: 100%;
+    min-height: 0;
+  }
+
+  /* ── TIME BAR ── */
+  .time-bar {
+    padding: 8px 18px 10px;
+    background: linear-gradient(180deg, var(--bg2) 0%, #08080f 100%);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+  .time-bar::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--indigo-dim) 50%, transparent);
+    opacity: 0.6;
+  }
+  .time-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .time-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-bright);
+    min-width: 56px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(92,92,255,0.3);
+  }
+  .time-marks {
+    flex: 1;
+    position: relative;
+    height: 18px;
+  }
+  #time-range {
+    position: absolute;
+    width: 100%;
+    top: 6px;
+    height: 5px;
+    background: var(--bg3);
+    border-radius: 3px;
+    accent-color: var(--indigo);
+  }
+  .time-tick {
+    position: absolute;
+    top: 14px;
+    width: 1px; height: 3px;
+    background: var(--text-dim);
+    pointer-events: none;
+  }
+  .time-tick-lbl {
+    position: absolute;
+    top: 17px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--text-dim);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .play-btn {
+    width: 30px; height: 30px;
+    background: var(--indigo);
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, box-shadow 0.2s;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(92,92,255,0.4);
+  }
+  .play-btn:hover { background: var(--indigo2); }
+  .speed-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .speed-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    min-width: 56px;
+  }
+  .speed-slider-wrap {
+    flex: 1;
+    position: relative;
+    height: 18px;
+  }
+  #speed-range {
+    -webkit-appearance: none;
+    position: absolute;
+    width: 100%;
+    top: 5px;
+    height: 4px;
+    background: linear-gradient(90deg,
+      var(--green) 0%, var(--indigo) 20%, var(--gold) 60%, var(--red) 100%);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  #speed-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--indigo);
+    box-shadow: 0 0 8px rgba(92,92,255,0.7);
+    cursor: grab;
+  }
+  #speed-range::-webkit-slider-thumb:active { cursor: grabbing; }
+  #speed-range::-moz-range-thumb {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--indigo);
+  }
+  .speed-tick {
+    position: absolute;
+    top: 13px;
+    width: 1px; height: 3px;
+    background: var(--text-dim);
+    pointer-events: none;
+  }
+  .speed-tick-lbl {
+    position: absolute;
+    top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--text-dim);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .speed-readout {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--indigo);
+    min-width: 48px;
+    text-align: right;
+  }
+  .speed-readout.realtime { color: var(--green); }
+  .speed-readout.fast    { color: var(--gold); }
+  .speed-readout.warp    { color: var(--red); }
+  .reset-btn {
+    width: 30px; height: 30px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .reset-btn:hover { border-color: var(--indigo); color: var(--indigo); }
+
+  /* ── DASHBOARD ── */
+  .dash-metric {
+    padding: 7px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dash-metric-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  .dash-metric-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-bright);
+    line-height: 1;
+  }
+  .dash-metric-val .unit {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-left: 2px;
+  }
+  .dash-metric-sub {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .dash-bar-wrap { margin-top: 4px; }
+  .dash-bar-bg {
+    height: 3px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .dash-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s, background 0.4s;
+  }
+
+  /* Mini chart */
+  #mini-chart { display: block; width: 100%; height: 55px; }
+
+  /* scrollbar thin */
+  .panel { scrollbar-width: thin; scrollbar-color: var(--indigo-dim) var(--bg); }
+
+  /* Temp color helpers */
+  .t-cold  { color: #38c8f0; }
+  .t-ok    { color: var(--green); }
+  .t-warm  { color: var(--gold); }
+  .t-hot   { color: #ff7043; }
+  .t-crit  { color: var(--red); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-logo">Projeto Interdisciplinar</div>
+  <div class="hdr-sub">Simulador de Estresse Térmico</div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-tag" id="hdr-speed">⚡ 1.0×</div>
+  <div class="hdr-tag" id="sim-status">● PAUSADO</div>
+</header>
+
+<div class="main">
+
+  <!-- ══════════════ LEFT PANEL: PARAMETERS ══════════════ -->
+  <aside class="panel">
+    <div class="panel-hdr">
+      <span class="panel-hdr-title">Parâmetros</span>
+    </div>
+
+    <!-- House Size -->
+    <div class="section">
+      <div class="section-label">Estrutura</div>
+      <div class="input-row">
+        <span class="input-lbl">Área</span>
+        <input type="number" class="num-input" id="inp-area" value="80" min="10" max="500">
+        <span class="num-input-unit">m²</span>
+      </div>
+      <div class="input-row">
+        <span class="input-lbl">Pé-direito</span>
+        <input type="number" class="num-input" id="inp-height" value="3.0" min="2" max="6" step="0.1">
+        <span class="num-input-unit">m</span>
+      </div>
+    </div>
+
+    <!-- External Temperature -->
+    <div class="section">
+      <div class="section-label">Ambiente Externo</div>
+      <div class="input-row">
+        <span class="input-lbl">Pico T°</span>
+        <input type="number" class="num-input" id="inp-tpeak" value="38" min="20" max="55">
+        <span class="num-input-unit">°C</span>
+      </div>
+      <div class="input-row">
+        <span class="input-lbl">T° mínima</span>
+        <input type="number" class="num-input" id="inp-tmin" value="22" min="10" max="35">
+        <span class="num-input-unit">°C</span>
+      </div>
+      <div class="input-row">
+        <span class="input-lbl">Umidade</span>
+        <input type="number" class="num-input" id="inp-hum" value="55" min="10" max="100">
+        <span class="num-input-unit">%</span>
+      </div>
+    </div>
+
+    <!-- CMYK Color -->
+    <div class="section">
+      <div class="section-label">Cor das Paredes (CMYK)</div>
+      <div class="cmyk-wrap">
+        <div class="cmyk-row">
+          <div class="cmyk-header">
+            <span class="cmyk-name">C — Cian</span>
+            <span class="cmyk-val" id="val-c">0%</span>
+          </div>
+          <input type="range" id="sl-c" min="0" max="100" value="0">
+        </div>
+        <div class="cmyk-row">
+          <div class="cmyk-header">
+            <span class="cmyk-name">M — Magenta</span>
+            <span class="cmyk-val" id="val-m">0%</span>
+          </div>
+          <input type="range" id="sl-m" min="0" max="100" value="0">
+        </div>
+        <div class="cmyk-row">
+          <div class="cmyk-header">
+            <span class="cmyk-name">Y — Amarelo</span>
+            <span class="cmyk-val" id="val-y">0%</span>
+          </div>
+          <input type="range" id="sl-y" min="0" max="100" value="0">
+        </div>
+        <div class="cmyk-row">
+          <div class="cmyk-header">
+            <span class="cmyk-name">K — Preto</span>
+            <span class="cmyk-val" id="val-k">0%</span>
+          </div>
+          <input type="range" id="sl-k" min="0" max="100" value="0">
+        </div>
+      </div>
+
+      <div class="color-preview-wrap" style="margin-top:12px">
+        <div class="color-swatch" id="wall-swatch"></div>
+        <div class="color-info">
+          <div class="color-hex" id="color-hex">#FFFFFF</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px">Absorção Solar</div>
+          <div class="absorb-bar-wrap">
+            <div class="absorb-bar-bg">
+              <div class="absorb-bar-fill" id="absorb-fill" style="width:10%"></div>
+            </div>
+            <span class="absorb-val" id="absorb-val">10%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cooling Systems -->
+    <div class="section">
+      <div class="section-label">Sistemas de Resfriamento</div>
+
+      <!-- AC -->
+      <div class="cooling-block" id="ac-block">
+        <div class="cooling-head" onclick="toggleCooling('ac')">
+          <span class="cooling-icon">❄️</span>
+          <span class="cooling-name">Ar Condicionado</span>
+          <div class="toggle" id="ac-toggle"></div>
+        </div>
+        <div class="cooling-detail">
+          <div class="input-row">
+            <span class="input-lbl">Potência</span>
+            <input type="number" class="num-input" id="inp-ac-btu" value="12000" min="5000" max="80000" step="500">
+            <span class="num-input-unit">BTU</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:4px">↓ T° real &amp; umidade</div>
+        </div>
+      </div>
+
+      <!-- Evap cooler -->
+      <div class="cooling-block" id="ev-block">
+        <div class="cooling-head" onclick="toggleCooling('ev')">
+          <span class="cooling-icon">💧</span>
+          <span class="cooling-name">Climatizador Evap.</span>
+          <div class="toggle" id="ev-toggle"></div>
+        </div>
+        <div class="cooling-detail">
+          <div class="input-row">
+            <span class="input-lbl">Vazão</span>
+            <input type="number" class="num-input" id="inp-ev-m3" value="500" min="50" max="5000" step="50">
+            <span class="num-input-unit">m³/h</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:6px">↓ T° real · ↑ umidade · limitado pela bulbo úmido</div>
+          <div style="margin-top:8px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);letter-spacing:1px">EFICIÊNCIA EVAP.</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-bright)" id="ev-eff-val">—</span>
+            </div>
+            <div style="height:3px;background:var(--bg);border-radius:2px;overflow:hidden">
+              <div id="ev-eff-bar" style="height:100%;width:0%;border-radius:2px;background:var(--cyan);transition:width 0.4s,background 0.4s"></div>
+            </div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-dim);margin-top:5px" id="ev-twb-line">T° bulbo úmido: —</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fan -->
+      <div class="cooling-block" id="fan-block">
+        <div class="cooling-head" onclick="toggleCooling('fan')">
+          <span class="cooling-icon">🌀</span>
+          <span class="cooling-name">Ventilador</span>
+          <div class="toggle" id="fan-toggle"></div>
+        </div>
+        <div class="cooling-detail">
+          <div class="input-row">
+            <span class="input-lbl">Velocidade</span>
+            <input type="number" class="num-input" id="inp-fan-rpm" value="3" min="1" max="5">
+            <span class="num-input-unit">vel.</span>
+          </div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:4px">Apenas ↓ sensação térmica</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════ CENTER: VISUAL STAGE ══════════════ -->
+  <div class="stage">
+    <canvas id="scene-canvas"></canvas>
+
+    <!-- TIME SCRUBBER -->
+    <div class="time-bar">
+      <!-- Row 1: Timeline -->
+      <div class="time-row">
+        <div class="time-display" id="time-disp">06:00</div>
+        <div class="time-marks">
+          <input type="range" id="time-range" min="0" max="1440" value="360" step="1">
+          <!-- ticks injected by JS -->
+        </div>
+        <button class="play-btn" id="play-btn" onclick="togglePlay()" title="Play/Pause">▶</button>
+      </div>
+
+      <!-- Row 2: Speed slider -->
+      <div class="speed-row">
+        <span class="speed-label">Aceleração</span>
+        <div class="speed-slider-wrap">
+          <input type="range" id="speed-range" min="0" max="100" value="0" step="1">
+          <!-- ticks injected by JS -->
+        </div>
+        <span class="speed-readout realtime" id="speed-readout">1.0×</span>
+        <button class="reset-btn" id="reset-btn" onclick="resetSpeed()" title="Voltar para tempo real">↺</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ RIGHT PANEL: DASHBOARD ══════════════ -->
+  <aside class="panel">
+    <div class="panel-hdr">
+      <span class="panel-hdr-title">Dashboard</span>
+    </div>
+
+
+    <div class="dash-metric">
+      <div class="dash-metric-label">Temperatura Externa</div>
+      <div class="dash-metric-val" id="d-text">—<span class="unit">°C</span></div>
+      <div class="dash-metric-sub" id="d-text-sub">aguardando simulação</div>
+    </div>
+
+    <div class="dash-metric">
+      <div class="dash-metric-label">Temperatura Interna Real</div>
+      <div class="dash-metric-val" id="d-tint">—<span class="unit">°C</span></div>
+      <div class="dash-bar-wrap">
+        <div class="dash-bar-bg">
+          <div class="dash-bar-fill" id="d-tint-bar" style="width:0%;background:var(--green)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-metric">
+      <div class="dash-metric-label">Sensação Térmica</div>
+      <div class="dash-metric-val" id="d-feel">—<span class="unit">°C</span></div>
+      <div class="dash-metric-sub" id="d-feel-sub">—</div>
+    </div>
+
+    <div class="dash-metric">
+      <div class="dash-metric-label">Umidade Interna</div>
+      <div class="dash-metric-val" id="d-hum">—<span class="unit">%</span></div>
+      <div class="dash-bar-wrap">
+        <div class="dash-bar-bg">
+          <div class="dash-bar-fill" id="d-hum-bar" style="width:0%;background:var(--cyan)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-metric">
+      <div class="dash-metric-label">Carga Térmica (Heat Gain)</div>
+      <div class="dash-metric-val" id="d-load">—<span class="unit">W</span></div>
+      <div class="dash-metric-sub" id="d-load-sub">—</div>
+    </div>
+
+    <div class="dash-metric">
+      <div class="dash-metric-label">Capacidade de Resfriamento</div>
+      <div class="dash-metric-val" id="d-cap">—<span class="unit">W</span></div>
+      <div class="dash-bar-wrap">
+        <div class="dash-bar-bg">
+          <div class="dash-bar-fill" id="d-cap-bar" style="width:0%;background:var(--indigo)"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-metric">
+      <div class="dash-metric-label">Tempo p/ Atingir 24°C</div>
+      <div class="dash-metric-val" id="d-eta">—</div>
+      <div class="dash-metric-sub" id="d-eta-sub">—</div>
+    </div>
+
+    <!-- Mini 24h chart -->
+    <div class="section">
+      <div class="section-label">Curva de Temperatura (24h)</div>
+      <canvas id="mini-chart"></canvas>
+    </div>
+
+  </aside>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+const state = {
+  minuteOfDay: 360,   // 06:00 — amanhecer
+  playing: false,
+  // speed = simulated minutes per real second.
+  // 1.0 = realtime (1 real min → 1 sim min, very slow)
+  // 60.0 = 1 real second → 1 sim minute (1 day in 24 minutes)
+  // 600.0 = 1 day in ~2.4 minutes
+  speed: 1.0,
+  speedSliderVal: 0,
+  // live computed
+  tExt: 22,
+  tInt: 22,
+  tFeel: 22,
+  humidity: 55,
+  heatGain: 0,
+  coolingCap: 0,
+  // toggles
+  ac: false, ev: false, fan: false,
+};
+
+let lastTime = null;
+let animFrame = null;
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+const $ = id => document.getElementById(id);
+const clamp = (v,a,b) => Math.min(Math.max(v,a),b);
+
+function cmykToRgb(c,m,y,k){
+  c/=100; m/=100; y/=100; k/=100;
+  const r = Math.round(255*(1-c)*(1-k));
+  const g = Math.round(255*(1-m)*(1-k));
+  const b = Math.round(255*(1-y)*(1-k));
+  return [r,g,b];
+}
+function rgbToHex(r,g,b){
+  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0').toUpperCase()).join('');
+}
+// Albedo = fraction reflected. Dark = low albedo = high absorption.
+function calcAbsorption(c,m,y,k){
+  const [r,g,b] = cmykToRgb(c,m,y,k);
+  const lum = (0.299*r + 0.587*g + 0.114*b)/255;
+  // absorption 0..1: white lum=1 → absorb=0.1, black lum=0 → absorb=0.95
+  return 0.10 + (1-lum)*0.85;
+}
+
+// Temperature curve: sinusoidal, peaks at 14:00 (840 min), min at 05:00 (300 min)
+function externalTemp(minute){
+  const tpeak = parseFloat($('inp-tpeak').value)||38;
+  const tmin  = parseFloat($('inp-tmin').value)||22;
+  const amp   = (tpeak-tmin)/2;
+  const mid   = tmin + amp;
+  // phase: peak at 840, period 1440
+  const phase = ((minute - 840)/1440)*2*Math.PI;
+  return mid + amp*Math.sin(phase - Math.PI/2 + Math.PI); // adjusted
+}
+
+// Solar irradiance proxy 0..1 (0 at night)
+function solarFactor(minute){
+  const h = minute/60;
+  if(h < 6 || h > 20) return 0;
+  return Math.max(0, Math.sin((h-6)/14*Math.PI));
+}
+
+// ═══════════════════════════════════════════════════════
+//  CMYK / COLOR UI
+// ═══════════════════════════════════════════════════════
+function updateColor(){
+  const c=+$('sl-c').value, m=+$('sl-m').value,
+        y=+$('sl-y').value, k=+$('sl-k').value;
+  $('val-c').textContent=c+'%';
+  $('val-m').textContent=m+'%';
+  $('val-y').textContent=y+'%';
+  $('val-k').textContent=k+'%';
+  const [r,g,b]=cmykToRgb(c,m,y,k);
+  const hex=rgbToHex(r,g,b);
+  $('wall-swatch').style.background=hex;
+  $('color-hex').textContent=hex;
+  const abs=calcAbsorption(c,m,y,k);
+  $('absorb-fill').style.width=(abs*100)+'%';
+  $('absorb-val').textContent=Math.round(abs*100)+'%';
+  // house color updates live via canvas on next frame
+}
+['sl-c','sl-m','sl-y','sl-k'].forEach(id=>$(id).addEventListener('input',updateColor));
+updateColor();
+
+// ═══════════════════════════════════════════════════════
+//  COOLING TOGGLES
+// ═══════════════════════════════════════════════════════
+function toggleCooling(sys){
+  state[sys]=!state[sys];
+  $(sys+'-toggle').classList.toggle('on', state[sys]);
+  $(sys+'-block').classList.toggle('active', state[sys]);
+}
+
+// ═══════════════════════════════════════════════════════
+//  PSYCHROMETRICS HELPERS
+// ═══════════════════════════════════════════════════════
+
+// Saturation vapor pressure [kPa] — Antoine equation (accurate 0–60°C)
+function pSat(T){
+  return 0.6108 * Math.exp(17.27 * T / (T + 237.3));
+}
+
+// Wet-bulb temperature [°C] via Stull (2011) approximation
+// Valid for RH 5–99%, T 2–50°C — error < 0.65°C
+function wetBulb(T, RH){
+  return T * Math.atan(0.151977 * Math.pow(RH + 8.313659, 0.5))
+       + Math.atan(T + RH)
+       - Math.atan(RH - 1.676331)
+       + 0.00391838 * Math.pow(RH, 1.5) * Math.atan(0.023101 * RH)
+       - 4.686035;
+}
+
+// Heat Index [°C] — Rothfusz regression (NWS standard)
+// Valid for T >= 27°C and RH >= 40%. Returns T unchanged below that.
+function heatIndex(T, RH){
+  if(T < 27 || RH < 40) return T;
+  let hi = -8.78469475556
+    + 1.61139411   * T
+    + 2.33854883889* RH
+    - 0.14611605   * T  * RH
+    - 0.012308094  * T  * T
+    - 0.016424828  * RH * RH
+    + 0.002211732  * T  * T  * RH
+    + 0.00072546   * T  * RH * RH
+    - 0.000003582  * T  * T  * RH * RH;
+  // Adjustment for very high or very low RH (NWS corrections)
+  if(RH < 13 && T >= 26.7 && T <= 44.4){
+    hi -= ((13 - RH) / 4) * Math.sqrt((17 - Math.abs(T - 95*5/9)) / 17);
+  }
+  if(RH > 85 && T >= 26.7 && T <= 30.6){
+    hi += ((RH - 85) / 10) * ((30.6 - T) / 5);
+  }
+  return hi;
+}
+
+// ═══════════════════════════════════════════════════════
+//  PHYSICS ENGINE
+// ═══════════════════════════════════════════════════════
+function runPhysics(dtMin){
+  const area    = parseFloat($('inp-area').value)||80;
+  const height  = parseFloat($('inp-height').value)||3.0;
+  const baseHum = parseFloat($('inp-hum').value)||55;
+  const vol     = area * height; // m³
+
+  const c=+$('sl-c').value, mv=+$('sl-m').value,
+        y=+$('sl-y').value, k=+$('sl-k').value;
+  const abs = calcAbsorption(c,mv,y,k);
+
+  const sol = solarFactor(state.minuteOfDay);
+  const I   = 1000 * sol; // W/m² peak irradiance
+
+  // Envelope area: 4 walls + roof
+  const side = Math.sqrt(area);
+  const wallArea = 4 * side * height + area;
+
+  // ── 1. Heat gain ──────────────────────────────────────
+  const solarGain = abs * I * area; // W — solar through roof/walls
+  const U = 0.8; // W/m²K — typical uninsulated masonry
+  state.tExt = externalTemp(state.minuteOfDay);
+  const condGain = U * wallArea * Math.max(0, state.tExt - state.tInt);
+  state.heatGain = solarGain + condGain;
+
+  // ── 2. Thermal mass ───────────────────────────────────
+  // Air + brick walls (200 kg/m² surface density, Cp 840 J/kgK)
+  const mAir  = 1.2 * vol;           // kg
+  const mWall = area * 200;           // kg (floor area proxy for wall mass)
+  const thermalMass = mAir * 1005 + mWall * 840; // J/K
+
+  // ── 3. Cooling systems ────────────────────────────────
+  let coolW = 0;
+  let humDelta = 0; // RH change [% points]
+
+  // — AC: sensible cooling + dehumidification
+  if(state.ac){
+    const btu = parseFloat($('inp-ac-btu').value)||12000;
+    const acW = btu * 0.29307; // BTU/h → W
+    coolW += acW;
+    // AC removes ~1.5 g water/Wh of cooling → humidity drop proportional to capacity
+    // Simplified: removes RH proportional to capacity relative to room volume
+    humDelta -= acW / vol * 0.018; // empirical: larger room → smaller drop
+  }
+
+  // — Evaporative cooler: governed entirely by wet-bulb depression
+  // Efficiency (saturation effectiveness) of typical unit: 70–85%
+  // Achievable cooling = eff × (T_dry - T_wet)
+  // The cooler CAN ONLY bring air toward wet-bulb temp, never below it.
+  // As RH → 100%, T_wet → T_dry → zero cooling possible.
+  if(state.ev){
+    const m3h = parseFloat($('inp-ev-m3').value)||500;
+    const massFlowPerSec = m3h / 3600 * 1.2; // kg/s of air
+    const Cp_air = 1005; // J/kg·K
+
+    const Twb = wetBulb(state.tInt, baseHum);
+    const depression = Math.max(0, state.tInt - Twb); // °C available for evaporative drop
+    const eff = 0.75; // saturation effectiveness (75% typical pad cooler)
+    const actualDrop = eff * depression; // °C of real temperature reduction
+
+    // Cooling power delivered = mass flow × Cp × temperature drop achieved
+    const evCoolW = massFlowPerSec * Cp_air * actualDrop;
+    coolW += evCoolW;
+
+    // Humidity rise: water evaporated raises RH toward saturation
+    // The closer to 100% RH, the smaller the rise (psychrometric constraint)
+    // Δω (humidity ratio) ≈ Cp_air × ΔT / λ_v   (λ_v latent heat ≈ 2501 kJ/kg)
+    const dOmega = Cp_air * actualDrop / 2501000; // kg_water / kg_air
+    // Convert to RH increase (approximate at standard conditions)
+    // ΔRH ≈ dOmega / (0.622 × pSat(T)/101.325) × 100
+    const pSatT = pSat(state.tInt);
+    const dRH = (dOmega / (0.622 * pSatT / 101.325)) * 100;
+    humDelta += dRH;
+
+    // Store evap effectiveness for dashboard
+    state.evEff = actualDrop > 0.1 ? eff * (depression / Math.max(depression, 0.1)) : 0;
+    state.evDrop = actualDrop;
+  } else {
+    state.evEff = null;
+    state.evDrop = 0;
+  }
+
+  state.coolingCap = coolW;
+
+  // ── 4. Temperature integration ────────────────────────
+  const netW   = state.heatGain - coolW;
+  const dtSec  = dtMin * 60;
+  const deltaT = (netW * dtSec) / thermalMass;
+  state.tInt   = clamp(state.tInt + deltaT, 10, 65);
+
+  // ── 5. Humidity ───────────────────────────────────────
+  // Base humidity tracks external (air infiltration)
+  // Then apply equipment deltas, clamped to physical range
+  let hum = baseHum + humDelta;
+  // AC dehumidification was already included in humDelta
+  state.humidity = clamp(hum, 5, 100);
+
+  // ── 6. Feels-like ─────────────────────────────────────
+  // Fan: wind-chill via Siple-Passel adapted for indoor convection
+  // A fan does NOT change air temperature — it increases convective
+  // heat transfer from skin. Equivalent windspeed formula.
+  let fanDrop = 0;
+  if(state.fan){
+    const vel = parseFloat($('inp-fan-rpm').value)||3;
+    // Approximate windspeed from fan speed level: 0.5 m/s per level
+    const v = vel * 0.5; // m/s
+    // Perceived cooling = 1.8 + 0.1266*(v^0.6) * (skin_T - air_T)
+    // Skin ≈ 34°C; this gives sensation drop relative to still air
+    const skinT = 34;
+    const stillConv  = 0.1266 * Math.pow(0.01, 0.6) * (skinT - state.tInt);
+    const movingConv = 0.1266 * Math.pow(v,    0.6) * (skinT - state.tInt);
+    fanDrop = clamp(movingConv - stillConv, 0, 10);
+    // Fan is useless / makes it worse if air is hotter than skin
+    if(state.tInt > skinT) fanDrop = 0;
+  }
+
+  const hi = heatIndex(state.tInt, state.humidity);
+  state.tFeel = clamp(hi - fanDrop, 5, 80);
+
+  // ── 7. ETA to comfort (24°C) ──────────────────────────
+  state.etaMin = null;
+  if(state.tInt > 24 && coolW > state.heatGain){
+    const netCool    = coolW - state.heatGain;
+    const energyNeeded = thermalMass * (state.tInt - 24);
+    state.etaMin = energyNeeded / netCool / 60; // minutes
+  }
+
+  // ── 8. Store debug values for dashboard ───────────────
+  state.solarGain = solarGain;
+  state.condGain  = condGain;
+  state.Twb       = state.ev ? wetBulb(state.tInt, baseHum) : null;
+}
+
+// ═══════════════════════════════════════════════════════
+//  SCENE CANVAS — full environment renderer
+// ═══════════════════════════════════════════════════════
+const sceneCanvas = $('scene-canvas');
+const ctx = sceneCanvas.getContext('2d');
+let W = 0, H = 0;
+// heat shimmer offset for animation
+let heatPhase = 0;
+
+function resizeScene(){
+  const stage = sceneCanvas.parentElement;
+  const timebar = stage.querySelector('.time-bar');
+  const tbH = timebar ? timebar.offsetHeight : 58;
+  sceneCanvas.width  = stage.clientWidth;
+  sceneCanvas.height = stage.clientHeight - tbH;
+  W = sceneCanvas.width;
+  H = sceneCanvas.height;
+}
+window.addEventListener('resize', resizeScene);
+resizeScene();
+
+// ── helpers ──────────────────────────────────────────
+function lerpColor(a,b,t){
+  const pa=hexParse(a),pb=hexParse(b);
+  return `rgb(${Math.round(pa[0]+(pb[0]-pa[0])*t)},${Math.round(pa[1]+(pb[1]-pa[1])*t)},${Math.round(pa[2]+(pb[2]-pa[2])*t)})`;
+}
+function hexParse(h){
+  let s=h.replace('#','');
+  if(s.length===3)s=s.split('').map(c=>c+c).join('');
+  return [parseInt(s.slice(0,2),16),parseInt(s.slice(2,4),16),parseInt(s.slice(4,6),16)];
+}
+function lerpN(a,b,t){ return a+(b-a)*t; }
+
+// ── sky gradient ─────────────────────────────────────
+function drawSkyGradient(minute){
+  const h = minute/60;
+  let c0,c1,c2;
+
+  if(h < 5){        // deep night
+    c0='#010112'; c1='#03021a'; c2='#060418';
+  } else if(h < 6.5){ // pre-dawn
+    const t=(h-5)/1.5;
+    c0=lerpColor('#010112','#0d1a40',t);
+    c1=lerpColor('#03021a','#3a1a40',t);
+    c2=lerpColor('#060418','#c06030',t);
+  } else if(h < 8){ // sunrise
+    const t=(h-6.5)/1.5;
+    c0=lerpColor('#0d1a40','#1a4080',t);
+    c1=lerpColor('#3a1a40','#e07030',t);
+    c2=lerpColor('#c06030','#f0a040',t);
+  } else if(h < 12){ // morning
+    const t=(h-8)/4;
+    c0=lerpColor('#1a4080','#1060c0',t);
+    c1=lerpColor('#e07030','#50a0e0',t);
+    c2=lerpColor('#f0a040','#80c8f0',t);
+  } else if(h < 16){ // noon / early afternoon
+    c0='#0a60c8'; c1='#3090e8'; c2='#70c0f8';
+  } else if(h < 18){ // late afternoon
+    const t=(h-16)/2;
+    c0=lerpColor('#0a60c8','#1a4080',t);
+    c1=lerpColor('#3090e8','#e08040',t);
+    c2=lerpColor('#70c0f8','#f0b060',t);
+  } else if(h < 19.5){ // sunset
+    const t=(h-18)/1.5;
+    c0=lerpColor('#1a4080','#200a30',t);
+    c1=lerpColor('#e08040','#c03020',t);
+    c2=lerpColor('#f0b060','#e05020',t);
+  } else if(h < 21){ // dusk
+    const t=(h-19.5)/1.5;
+    c0=lerpColor('#200a30','#010112',t);
+    c1=lerpColor('#c03020','#08061a',t);
+    c2=lerpColor('#e05020','#060418',t);
+  } else {           // night
+    c0='#010112'; c1='#03021a'; c2='#060418';
+  }
+
+  const g = ctx.createLinearGradient(0,0,0,H*0.72);
+  g.addColorStop(0, c0);
+  g.addColorStop(0.5, c1);
+  g.addColorStop(1, c2);
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,W,H);
+}
+
+// ── stars ────────────────────────────────────────────
+function drawStars(minute){
+  const h=minute/60;
+  const nightA = h<5?1:h<7?clamp(1-(h-5)/2,0,1):h>20?clamp((h-20)/1.5,0,1):0;
+  if(nightA < 0.02) return;
+  ctx.save();
+  ctx.globalAlpha = nightA;
+  // deterministic star field
+  for(let i=0;i<80;i++){
+    const sx=((i*137.508)%1)*W;
+    const sy=((i*97.31)%0.75)*H*0.65;
+    const sz=0.6+((i*19)%8)*0.12;
+    const twinkle=0.5+0.5*Math.sin(heatPhase*0.3+i*1.3);
+    ctx.globalAlpha = nightA * (0.5+0.5*twinkle);
+    ctx.fillStyle='#e8eaff';
+    ctx.beginPath();
+    ctx.arc(sx,sy,sz,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+// ── sun arc ──────────────────────────────────────────
+// Sun rises at left horizon (6h), peaks at top-center (12h), sets right (18h)
+function sunPosition(minute){
+  const h=minute/60;
+  if(h<6||h>18) return null;
+  const t=(h-6)/12; // 0..1 over 6→18h
+  // arc: start bottom-left, peak near top-center, end bottom-right
+  const arcX = lerpN(W*0.05, W*0.95, t);
+  // parabolic height: max at t=0.5
+  const arcY = H*0.82 - Math.sin(t*Math.PI)*(H*0.72);
+  return { x:arcX, y:arcY, t };
+}
+
+function drawSun(minute){
+  const pos = sunPosition(minute);
+  if(!pos) return;
+  const sol = solarFactor(minute);
+  if(sol < 0.01) return;
+
+  const {x,y} = pos;
+  const r = 28+sol*8;
+
+  // outer glow
+  const glow = ctx.createRadialGradient(x,y,r*0.3,x,y,r*3.5);
+  glow.addColorStop(0,`rgba(255,240,120,${0.35*sol})`);
+  glow.addColorStop(0.4,`rgba(255,180,40,${0.15*sol})`);
+  glow.addColorStop(1,`rgba(255,120,0,0)`);
+  ctx.fillStyle=glow;
+  ctx.beginPath();
+  ctx.arc(x,y,r*3.5,0,Math.PI*2);
+  ctx.fill();
+
+  // solar disk
+  const disk = ctx.createRadialGradient(x-r*0.25,y-r*0.25,r*0.1,x,y,r);
+  disk.addColorStop(0,`rgba(255,255,220,${sol})`);
+  disk.addColorStop(0.6,`rgba(255,220,80,${sol})`);
+  disk.addColorStop(1,`rgba(255,160,20,${sol*0.8})`);
+  ctx.fillStyle=disk;
+  ctx.beginPath();
+  ctx.arc(x,y,r,0,Math.PI*2);
+  ctx.fill();
+
+  // sun rays (only midday)
+  if(sol > 0.5){
+    ctx.save();
+    ctx.globalAlpha=(sol-0.5)*0.6;
+    ctx.strokeStyle='rgba(255,240,100,0.4)';
+    ctx.lineWidth=1.5;
+    for(let i=0;i<8;i++){
+      const a=i*Math.PI/4 + heatPhase*0.01;
+      const r1=r+6, r2=r+14+sol*8;
+      ctx.beginPath();
+      ctx.moveTo(x+Math.cos(a)*r1, y+Math.sin(a)*r1);
+      ctx.lineTo(x+Math.cos(a)*r2, y+Math.sin(a)*r2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+}
+
+// ── moon ─────────────────────────────────────────────
+function drawMoon(minute){
+  const h=minute/60;
+  const nightA = h<5?1:h<7?clamp(1-(h-5)/2,0,1):h>20?clamp((h-20)/1.5,0,1):0;
+  if(nightA < 0.05) return;
+
+  // moon arc across night sky
+  let t;
+  if(h >= 20) t = (h-20)/8;
+  else t = (h+4)/8; // wraps from ~20 past midnight to ~6
+  t = clamp(t,0,1);
+  const mx = lerpN(W*0.08, W*0.92, t);
+  const my = H*0.35 - Math.sin(t*Math.PI)*(H*0.25);
+
+  ctx.save();
+  ctx.globalAlpha=nightA;
+  // glow
+  const mg = ctx.createRadialGradient(mx,my,8,mx,my,45);
+  mg.addColorStop(0,'rgba(220,220,180,0.3)');
+  mg.addColorStop(1,'rgba(100,100,160,0)');
+  ctx.fillStyle=mg;
+  ctx.beginPath(); ctx.arc(mx,my,45,0,Math.PI*2); ctx.fill();
+  // moon body
+  ctx.fillStyle='#d8d4b0';
+  ctx.beginPath(); ctx.arc(mx,my,20,0,Math.PI*2); ctx.fill();
+  // crescent shadow
+  ctx.fillStyle='rgba(2,2,20,0.88)';
+  ctx.beginPath(); ctx.arc(mx+10,my,17,0,Math.PI*2); ctx.fill();
+  // crater
+  ctx.fillStyle='rgba(180,175,140,0.4)';
+  ctx.beginPath(); ctx.arc(mx-5,my+4,4,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+// ── clouds ────────────────────────────────────────────
+function drawCloud(cx,cy,sz,alpha){
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.fillStyle='rgba(240,245,255,0.82)';
+  const bubbles=[
+    [0,0,sz],[sz*0.7,-sz*0.4,sz*0.75],[sz*1.4,0,sz*0.65],
+    [sz*0.35,-sz*0.65,sz*0.55],[sz*2.0,sz*0.1,sz*0.5],[-sz*0.4,sz*0.1,sz*0.55]
+  ];
+  bubbles.forEach(([bx,by,br])=>{
+    ctx.beginPath();
+    ctx.arc(cx+bx,cy+by,br,0,Math.PI*2);
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+function drawClouds(minute){
+  const h=minute/60;
+  const dayA=h>=7&&h<=19?clamp((h-7)/1.5,0,1)*clamp((19-h)/1.5,0,1):0;
+  if(dayA<0.05) return;
+  // slow drift
+  const drift=heatPhase*0.12;
+  drawCloud(W*0.15+drift%W, H*0.12, 22, dayA*0.55);
+  drawCloud(W*0.55+(drift*0.7)%W, H*0.08, 18, dayA*0.4);
+  drawCloud(W*0.82+(drift*0.5)%W, H*0.15, 14, dayA*0.35);
+}
+
+// ── mountains ─────────────────────────────────────────
+function drawMountains(minute){
+  const h=minute/60;
+  const isDark=h<6||h>20;
+  const dusk=h>=18&&h<=21?clamp((h-18)/1.5,0,1):0;
+  const dawn=h>=5&&h<=7?clamp((h-5)/2,0,1):0;
+
+  // back range — tall, blue/purple
+  const bmtA = isDark?'rgba(18,12,40,0.95)':
+               dusk>0?`rgba(${Math.round(lerpN(30,18,dusk))},${Math.round(lerpN(50,12,dusk))},${Math.round(lerpN(90,40,dusk))},0.9)`:
+               dawn>0?`rgba(${Math.round(lerpN(18,40,dawn))},${Math.round(lerpN(12,50,dawn))},${Math.round(lerpN(40,90,dawn))},0.9)`:
+               'rgba(40,60,110,0.75)';
+  ctx.fillStyle=bmtA;
+  ctx.beginPath();
+  const groundY = H*0.68;
+  ctx.moveTo(0, groundY);
+  const bpeaks=[
+    [0,0.72],[0.05,0.32],[0.12,0.40],[0.20,0.22],[0.28,0.36],
+    [0.36,0.18],[0.45,0.30],[0.55,0.15],[0.65,0.28],[0.74,0.20],
+    [0.82,0.34],[0.90,0.24],[0.96,0.38],[1.0,0.72]
+  ];
+  bpeaks.forEach(([bx,by])=>ctx.lineTo(bx*W, groundY - by*(H*0.38)));
+  ctx.lineTo(W, groundY);
+  ctx.closePath();
+  ctx.fill();
+
+  // mid range — darker
+  const mmtA = isDark?'rgba(10,8,22,0.97)':
+               dusk>0?`rgba(${Math.round(lerpN(20,10,dusk))},${Math.round(lerpN(35,8,dusk))},${Math.round(lerpN(55,22,dusk))},0.92)`:
+               'rgba(25,40,65,0.88)';
+  ctx.fillStyle=mmtA;
+  ctx.beginPath();
+  ctx.moveTo(0, groundY);
+  const mpeaks=[
+    [0,0.55],[0.06,0.20],[0.14,0.30],[0.22,0.14],[0.30,0.24],
+    [0.40,0.10],[0.50,0.22],[0.60,0.08],[0.70,0.18],[0.80,0.12],
+    [0.88,0.20],[0.94,0.16],[1.0,0.55]
+  ];
+  mpeaks.forEach(([mx2,my2])=>ctx.lineTo(mx2*W, groundY - my2*(H*0.30)));
+  ctx.lineTo(W,groundY);
+  ctx.closePath();
+  ctx.fill();
+}
+
+// ── trees ─────────────────────────────────────────────
+function drawTree(tx,ty,height,alpha,isNight){
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  const tcolor=isNight?'#0a1408':'#1a3a12';
+  // trunk
+  ctx.fillStyle=isNight?'#0c0a06':'#3a2a18';
+  ctx.fillRect(tx-height*0.06, ty-height*0.2, height*0.12, height*0.2);
+  // foliage: 3 triangles
+  for(let layer=0;layer<3;layer++){
+    const ly=ty-height*0.15 - layer*height*0.28;
+    const lw=height*(0.55-layer*0.12);
+    ctx.fillStyle=tcolor;
+    ctx.beginPath();
+    ctx.moveTo(tx, ly-height*0.32);
+    ctx.lineTo(tx-lw, ly);
+    ctx.lineTo(tx+lw, ly);
+    ctx.closePath();
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawTrees(minute){
+  const h=minute/60;
+  const isNight=h<6||h>20;
+  const groundY=H*0.68;
+  // left cluster
+  const leftTrees=[
+    [0.03,0,38],[0.07,4,52],[0.11,-2,44],[0.15,2,36],
+    [0.18,-4,48],[0.22,0,40]
+  ];
+  leftTrees.forEach(([fx,oy,ht])=>
+    drawTree(fx*W, groundY+oy, ht, 0.92, isNight));
+  // right cluster
+  const rightTrees=[
+    [0.78,0,42],[0.82,3,50],[0.86,-2,38],[0.90,4,46],
+    [0.93,-1,36],[0.97,2,44]
+  ];
+  rightTrees.forEach(([fx,oy,ht])=>
+    drawTree(fx*W, groundY+oy, ht, 0.92, isNight));
+  // scattered mid-ground behind house
+  [[0.32,1,30],[0.38,-3,26],[0.62,2,28],[0.68,-1,32]].forEach(([fx,oy,ht])=>
+    drawTree(fx*W, groundY+oy, ht, 0.6, isNight));
+}
+
+// ── ground / grass ────────────────────────────────────
+function drawGround(minute){
+  const h=minute/60;
+  const isNight=h<6||h>20;
+  const groundY=H*0.68;
+
+  // ground fill
+  const grassTop=isNight?'#0c1a08':'#2a5a1e';
+  const grassBot=isNight?'#080f06':'#1a3a12';
+  const gg=ctx.createLinearGradient(0,groundY,0,H);
+  gg.addColorStop(0,grassTop);
+  gg.addColorStop(1,grassBot);
+  ctx.fillStyle=gg;
+  ctx.fillRect(0,groundY,W,H-groundY);
+
+  // road / path in front of house
+  const cx=W*0.5;
+  ctx.fillStyle=isNight?'#151210':'#2a2520';
+  ctx.beginPath();
+  ctx.moveTo(cx-22, groundY);
+  ctx.lineTo(cx+22, groundY);
+  ctx.lineTo(cx+50, H);
+  ctx.lineTo(cx-50, H);
+  ctx.closePath();
+  ctx.fill();
+}
+
+// ── house ─────────────────────────────────────────────
+function drawHouse(minute){
+  const h=minute/60;
+  const isNight=h<6||h>20;
+  const sol=solarFactor(minute);
+
+  // house position & size
+  const houseW=Math.min(W*0.48, 300);
+  const houseH=houseW*0.55;
+  const groundY=H*0.68;
+  const hx=W*0.5 - houseW*0.5; // left edge
+  const hy=groundY - houseH;    // top of walls
+
+  // get wall color from CMYK
+  const cv=+$('sl-c').value, mv=+$('sl-m').value,
+        yv=+$('sl-y').value, kv=+$('sl-k').value;
+  const [wr,wg,wb]=cmykToRgb(cv,mv,yv,kv);
+
+  // ── dynamic projected shadow ──
+  // Real sun-projection: shadow falls opposite to sun direction,
+  // length grows as sun gets low, shrinks at noon.
+  if(sol > 0.05){
+    const spos = sunPosition(minute);
+    if(spos){
+      // Sun vector from house center
+      const houseCx = hx + houseW * 0.5;
+      const houseCy = hy + houseH * 0.5;
+      const sunDX = spos.x - houseCx;
+      const sunDY = spos.y - houseCy;
+      // Sun height angle: 1 at zenith, 0 at horizon
+      // spos.t is 0..1 over 6h..18h, peak at 0.5
+      const sunAltitude = Math.sin(spos.t * Math.PI); // 0..1
+      // Shadow length multiplier: short at noon, long at horizon
+      // Real physics: shadowLen = objectHeight / tan(altitude_angle)
+      // We approximate: at altitude=1 (noon) → 0.3× width, at altitude=0 → 5× width
+      const shadowLen = clamp((1 - sunAltitude) * houseW * 1.6 + houseW * 0.25, houseW*0.25, houseW*2.5);
+      // Shadow direction: opposite of sun X position relative to house
+      const sunSign = sunDX > 0 ? 1 : -1;
+      // Horizontal projection of shadow
+      const shadowDx = -sunSign * shadowLen;
+      // Shadow opacity: stronger when sun is high (more direct light)
+      const shadowAlpha = clamp(0.18 + sunAltitude * 0.32, 0.15, 0.5) * sol;
+
+      ctx.save();
+      ctx.globalAlpha = shadowAlpha;
+      ctx.fillStyle = '#000';
+
+      // Build a projected polygon mirroring the house silhouette onto the ground
+      // Cast from each top vertex of the house+roof
+      const roofPeakX = hx + houseW * 0.5;
+      const roofPeakY = hy - houseH * 0.52;
+      // Project a point (px,py) onto ground plane along sun direction
+      const project = (px, py) => {
+        // Object height above ground
+        const objH = groundY - py;
+        // Horizontal shift proportional to object height & shadow length factor
+        const shiftFactor = shadowLen / houseH;
+        return {
+          x: px + (-sunSign) * objH * shiftFactor,
+          y: groundY
+        };
+      };
+      // Bottom corners stay on ground
+      const bl = { x: hx,           y: groundY };
+      const br = { x: hx + houseW,  y: groundY };
+      // Top corners project onto ground
+      const tl = project(hx, hy);
+      const tr = project(hx + houseW, hy);
+      // Roof peak projects further
+      const rp = project(roofPeakX, roofPeakY);
+
+      // Compose polygon based on sun side
+      ctx.beginPath();
+      if(sunSign > 0){
+        // Sun on right → shadow goes left
+        ctx.moveTo(br.x, br.y);
+        ctx.lineTo(bl.x, bl.y);
+        ctx.lineTo(tl.x, tl.y);
+        ctx.lineTo(rp.x, rp.y);
+        ctx.lineTo(tr.x, tr.y);
+      } else {
+        // Sun on left → shadow goes right
+        ctx.moveTo(bl.x, bl.y);
+        ctx.lineTo(br.x, br.y);
+        ctx.lineTo(tr.x, tr.y);
+        ctx.lineTo(rp.x, rp.y);
+        ctx.lineTo(tl.x, tl.y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  // ── chimney (behind roof) ──
+  const chimneyX=hx+houseW*0.70;
+  const chimneyW=houseW*0.07;
+  ctx.fillStyle='#5a3c2a';
+  ctx.fillRect(chimneyX, hy-houseW*0.16, chimneyW, houseW*0.22);
+
+  // ── roof ──
+  const roofPeak=[hx+houseW*0.5, hy-houseH*0.52];
+  // compute roof color from wall (darker)
+  const rfR=Math.round(wr*0.38+20), rfG=Math.round(wg*0.30+12), rfB=Math.round(wb*0.22+8);
+  ctx.fillStyle=`rgb(${rfR},${rfG},${rfB})`;
+  ctx.beginPath();
+  ctx.moveTo(hx-6, hy);
+  ctx.lineTo(roofPeak[0], roofPeak[1]);
+  ctx.lineTo(hx+houseW+6, hy);
+  ctx.closePath();
+  ctx.fill();
+  // roof border
+  ctx.strokeStyle='rgba(0,0,0,0.3)';
+  ctx.lineWidth=1.5;
+  ctx.stroke();
+  // roof shading left/right face
+  const roofShadeL=ctx.createLinearGradient(hx,hy,roofPeak[0],roofPeak[1]);
+  roofShadeL.addColorStop(0,'rgba(255,255,255,0.08)');
+  roofShadeL.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=roofShadeL;
+  ctx.beginPath();
+  ctx.moveTo(hx-6,hy); ctx.lineTo(roofPeak[0],roofPeak[1]); ctx.lineTo(hx+houseW*0.5,hy); ctx.closePath();
+  ctx.fill();
+
+  // ── walls ──
+  // solar tint: warmer when sun hits
+  const sunTint = sol*0.18;
+  const wallR=Math.round(clamp(wr*(1-sunTint*0.3)+sunTint*80,0,255));
+  const wallG=Math.round(clamp(wg*(1-sunTint*0.3)+sunTint*40,0,255));
+  const wallB=Math.round(clamp(wb*(1-sunTint*0.3),0,255));
+  ctx.fillStyle=`rgb(${wallR},${wallG},${wallB})`;
+  ctx.fillRect(hx, hy, houseW, houseH);
+
+  // wall border
+  ctx.strokeStyle='rgba(0,0,0,0.25)';
+  ctx.lineWidth=1;
+  ctx.strokeRect(hx, hy, houseW, houseH);
+
+  // wall subtle shade (left edge darker)
+  const wallShade=ctx.createLinearGradient(hx,0,hx+houseW,0);
+  wallShade.addColorStop(0,'rgba(0,0,0,0.18)');
+  wallShade.addColorStop(0.3,'rgba(0,0,0,0)');
+  wallShade.addColorStop(0.7,'rgba(0,0,0,0)');
+  wallShade.addColorStop(1,'rgba(0,0,0,0.12)');
+  ctx.fillStyle=wallShade;
+  ctx.fillRect(hx,hy,houseW,houseH);
+
+  // ── windows ──
+  const winW=houseW*0.18, winH=houseH*0.32;
+  const winY=hy+houseH*0.18;
+  const windowPositions=[hx+houseW*0.10, hx+houseW*0.72];
+  windowPositions.forEach(wx=>{
+    // window frame
+    ctx.fillStyle='#2a1e12';
+    ctx.fillRect(wx-2,winY-2,winW+4,winH+4);
+    // glass
+    const nightWin=isNight?`rgba(255,200,80,${0.6+Math.sin(heatPhase*0.05)*0.1})`:'#1e4a7a';
+    ctx.fillStyle=nightWin;
+    ctx.fillRect(wx,winY,winW,winH);
+    if(isNight){
+      // warm interior glow
+      const wg2=ctx.createRadialGradient(wx+winW/2,winY+winH/2,2,wx+winW/2,winY+winH/2,winW*1.2);
+      wg2.addColorStop(0,'rgba(255,200,80,0.25)');
+      wg2.addColorStop(1,'rgba(255,180,40,0)');
+      ctx.fillStyle=wg2;
+      ctx.fillRect(wx-winW*0.5,winY-winH*0.5,winW*2,winH*2);
+    }
+    // cross dividers
+    ctx.strokeStyle='rgba(255,255,255,0.12)';
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(wx+winW/2,winY); ctx.lineTo(wx+winW/2,winY+winH);
+    ctx.moveTo(wx,winY+winH/2); ctx.lineTo(wx+winW,winY+winH/2);
+    ctx.stroke();
+    // reflection shimmer
+    if(!isNight&&sol>0.2){
+      ctx.fillStyle=`rgba(255,255,255,${0.08*sol})`;
+      ctx.beginPath();
+      ctx.moveTo(wx+2,winY+2);
+      ctx.lineTo(wx+winW*0.4,winY+2);
+      ctx.lineTo(wx+2,winY+winH*0.4);
+      ctx.closePath();
+      ctx.fill();
+    }
+  });
+
+  // ── door ──
+  const doorW=houseW*0.14, doorH=houseH*0.42;
+  const doorX=hx+houseW*0.5-doorW/2;
+  const doorY=groundY-doorH;
+  ctx.fillStyle='#2a1a0e';
+  ctx.fillRect(doorX,doorY,doorW,doorH);
+  // door panels
+  ctx.fillStyle='#1e130a';
+  ctx.fillRect(doorX+3,doorY+4,doorW/2-5,doorH*0.42);
+  ctx.fillRect(doorX+doorW/2+2,doorY+4,doorW/2-5,doorH*0.42);
+  ctx.fillRect(doorX+3,doorY+doorH*0.5,doorW-6,doorH*0.45);
+  // knob
+  ctx.fillStyle='#c8922a';
+  ctx.beginPath();
+  ctx.arc(doorX+doorW*0.72,doorY+doorH*0.55,3,0,Math.PI*2);
+  ctx.fill();
+
+  // ── heat shimmer above roof ──
+  const tDiff=state.tInt-22;
+  if(tDiff>2&&sol>0.1){
+    const shimAlpha=clamp(tDiff/25*sol,0,0.55);
+    ctx.save();
+    ctx.globalAlpha=shimAlpha;
+    for(let i=0;i<6;i++){
+      const sx=hx+houseW*(0.1+i*0.16);
+      const sy=roofPeak[1]-10;
+      const shimOff=Math.sin(heatPhase*0.08+i*1.1)*4;
+      ctx.strokeStyle=`rgba(255,160,40,0.3)`;
+      ctx.lineWidth=2;
+      ctx.setLineDash([3,6]);
+      ctx.beginPath();
+      ctx.moveTo(sx+shimOff, sy);
+      ctx.lineTo(sx+shimOff*1.5, sy-30-i*4);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    ctx.restore();
+  }
+
+  return { hx, hy, houseW, houseH, groundY };
+}
+
+// ── temperature display board ─────────────────────────
+function drawTempBoard(houseInfo){
+  const { hx, hy, houseW, groundY } = houseInfo;
+  const h=state.minuteOfDay/60;
+  const isNight=h<6||h>20;
+
+  // ── post & dual boards ──
+  // Tall vertical post on right side of house, holding two boards stacked
+  const postX = hx + houseW + 32;
+  const postY = groundY;
+  const postH = houseW*0.78;
+  const boardW = Math.min(houseW*0.50, 175);
+  const tempBoardH = boardW*0.50;
+  const clockBoardH = boardW*0.42;
+  const gap = 8;
+
+  const boardX = postX - boardW*0.5;
+  const tempBoardY = postY - postH;
+  const clockBoardY = tempBoardY + tempBoardH + gap;
+
+  // ── support post (steel-like) ──
+  const postGrad = ctx.createLinearGradient(postX-5,0,postX+5,0);
+  postGrad.addColorStop(0,'#15161e');
+  postGrad.addColorStop(0.5,'#3a3b48');
+  postGrad.addColorStop(1,'#15161e');
+  ctx.fillStyle=postGrad;
+  ctx.fillRect(postX-5, postY-postH+tempBoardH*0.3, 10, postH);
+  // base flange
+  ctx.fillStyle='#1a1a22';
+  ctx.fillRect(postX-12, postY-4, 24, 6);
+
+  // ── TEMPERATURE BOARD (top) ──
+  drawDisplayPanel({
+    x: boardX, y: tempBoardY, w: boardW, h: tempBoardH,
+    type: 'temp',
+    isNight
+  });
+
+  // ── CLOCK BOARD (bottom) ──
+  drawDisplayPanel({
+    x: boardX, y: clockBoardY, w: boardW, h: clockBoardH,
+    type: 'clock',
+    isNight
+  });
+}
+
+// Unified display panel renderer
+function drawDisplayPanel({x,y,w,h,type,isNight}){
+  // panel chassis — brushed dark metal
+  const chassisGrad = ctx.createLinearGradient(x,y,x,y+h);
+  chassisGrad.addColorStop(0,'#1a1d2a');
+  chassisGrad.addColorStop(0.5,'#0e1018');
+  chassisGrad.addColorStop(1,'#08090f');
+  ctx.fillStyle=chassisGrad;
+  roundRect(ctx, x, y, w, h, 6);
+  ctx.fill();
+
+  // bezel highlight
+  ctx.strokeStyle='rgba(255,255,255,0.06)';
+  ctx.lineWidth=1;
+  roundRect(ctx, x+1, y+1, w-2, h-2, 5);
+  ctx.stroke();
+
+  // outer border
+  ctx.strokeStyle='#2a2e3e';
+  ctx.lineWidth=1.5;
+  roundRect(ctx, x, y, w, h, 6);
+  ctx.stroke();
+
+  // screen inset
+  const padX = w*0.05, padY = h*0.10;
+  const sx = x+padX, sy = y+padY;
+  const sw = w-padX*2, sh = h-padY*2;
+
+  // screen background (deep black with tint)
+  ctx.fillStyle='#04050a';
+  roundRect(ctx, sx, sy, sw, sh, 3);
+  ctx.fill();
+
+  // screen scanline overlay (subtle)
+  ctx.save();
+  ctx.globalAlpha=0.04;
+  for(let i=0;i<sh;i+=2){
+    ctx.fillStyle='rgba(255,255,255,0.4)';
+    ctx.fillRect(sx, sy+i, sw, 1);
+  }
+  ctx.restore();
+
+  // corner brackets (Nexus signature)
+  drawCornerBrackets(sx, sy, sw, sh, 'rgba(92,92,255,0.45)');
+
+  if(type==='temp') drawTempContent(sx, sy, sw, sh);
+  else if(type==='clock') drawClockContent(sx, sy, sw, sh);
+
+  // tiny screws at corners
+  [[x+5,y+5],[x+w-5,y+5],[x+5,y+h-5],[x+w-5,y+h-5]].forEach(([cx,cy])=>{
+    ctx.fillStyle='#2a2e3e';
+    ctx.beginPath(); ctx.arc(cx,cy,2.2,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='#08090f';
+    ctx.lineWidth=0.8;
+    ctx.beginPath();
+    ctx.moveTo(cx-1.2,cy); ctx.lineTo(cx+1.2,cy);
+    ctx.stroke();
+  });
+}
+
+function drawCornerBrackets(x,y,w,h,col){
+  ctx.strokeStyle=col;
+  ctx.lineWidth=1;
+  const sz=5;
+  // TL
+  ctx.beginPath();
+  ctx.moveTo(x,y+sz); ctx.lineTo(x,y); ctx.lineTo(x+sz,y); ctx.stroke();
+  // TR
+  ctx.beginPath();
+  ctx.moveTo(x+w-sz,y); ctx.lineTo(x+w,y); ctx.lineTo(x+w,y+sz); ctx.stroke();
+  // BL
+  ctx.beginPath();
+  ctx.moveTo(x,y+h-sz); ctx.lineTo(x,y+h); ctx.lineTo(x+sz,y+h); ctx.stroke();
+  // BR
+  ctx.beginPath();
+  ctx.moveTo(x+w-sz,y+h); ctx.lineTo(x+w,y+h); ctx.lineTo(x+w,y+h-sz); ctx.stroke();
+}
+
+function drawTempContent(x,y,w,h){
+  const te=state.tExt;
+  const ledColor = te<24?'#38c8f0': te<28?'#2ecc71': te<34?'#f0b429': te<38?'#ff7043':'#ff3c3c';
+  const glowParse=hexParse(te<24?'#38c8f0':te<32?'#2ecc71':te<38?'#f0b429':'#ff3c3c');
+
+  // ambient glow inside screen
+  const gg=ctx.createRadialGradient(x+w/2,y+h*0.55,5,x+w/2,y+h*0.55,w*0.6);
+  gg.addColorStop(0,`rgba(${glowParse[0]},${glowParse[1]},${glowParse[2]},0.12)`);
+  gg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=gg;
+  ctx.fillRect(x,y,w,h);
+
+  // label
+  ctx.fillStyle='rgba(140,150,200,0.85)';
+  ctx.font=`600 ${Math.max(8,Math.round(w*0.075))}px 'Rajdhani',sans-serif`;
+  ctx.textAlign='center';
+  ctx.textBaseline='top';
+  ctx.fillText('TEMPERATURA EXTERNA', x+w/2, y+h*0.06);
+
+  // separator line
+  ctx.strokeStyle='rgba(92,92,255,0.2)';
+  ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(x+w*0.15, y+h*0.27);
+  ctx.lineTo(x+w*0.85, y+h*0.27);
+  ctx.stroke();
+
+  // main reading — LED digits with glow
+  ctx.save();
+  ctx.shadowColor=ledColor;
+  ctx.shadowBlur=10+Math.sin(heatPhase*0.06)*3;
+  ctx.fillStyle=ledColor;
+  ctx.font=`bold ${Math.round(w*0.28)}px 'JetBrains Mono',monospace`;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(state.tExt.toFixed(1)+'°', x+w/2, y+h*0.55);
+  ctx.restore();
+
+  // sub: sensação térmica
+  ctx.fillStyle='rgba(180,185,220,0.8)';
+  ctx.font=`${Math.round(w*0.075)}px 'JetBrains Mono',monospace`;
+  ctx.textAlign='center';
+  ctx.textBaseline='bottom';
+  ctx.fillText('SENS  '+state.tFeel.toFixed(1)+'°C', x+w/2, y+h*0.95);
+}
+
+function drawClockContent(x,y,w,h){
+  // clock screen — digital + analog combo
+  // left side: analog clock face; right side: digital readout
+  const analogR = h*0.34;
+  const ax = x + w*0.25;
+  const ay = y + h*0.55;
+
+  // analog clock face
+  ctx.save();
+  // outer ring
+  ctx.fillStyle='#0a0c14';
+  ctx.beginPath(); ctx.arc(ax, ay, analogR+2, 0, Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(92,92,255,0.4)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.arc(ax, ay, analogR, 0, Math.PI*2); ctx.stroke();
+
+  // hour ticks
+  for(let i=0;i<12;i++){
+    const a = i*Math.PI/6 - Math.PI/2;
+    const r1 = analogR*0.85, r2 = analogR*0.96;
+    ctx.strokeStyle = i%3===0?'rgba(200,205,232,0.9)':'rgba(120,125,160,0.5)';
+    ctx.lineWidth = i%3===0?1.5:0.8;
+    ctx.beginPath();
+    ctx.moveTo(ax+Math.cos(a)*r1, ay+Math.sin(a)*r1);
+    ctx.lineTo(ax+Math.cos(a)*r2, ay+Math.sin(a)*r2);
+    ctx.stroke();
+  }
+
+  // hour & minute angles (24h converted to 12h analog)
+  const totalMin = state.minuteOfDay;
+  const hourAngle = ((totalMin/60)%12)/12 * Math.PI*2 - Math.PI/2;
+  const minAngle  = (totalMin%60)/60 * Math.PI*2 - Math.PI/2;
+
+  // hour hand
+  ctx.strokeStyle='#e8eaff';
+  ctx.lineWidth=2.4;
+  ctx.lineCap='round';
+  ctx.beginPath();
+  ctx.moveTo(ax,ay);
+  ctx.lineTo(ax+Math.cos(hourAngle)*analogR*0.55, ay+Math.sin(hourAngle)*analogR*0.55);
+  ctx.stroke();
+
+  // minute hand
+  ctx.strokeStyle='#5c5cff';
+  ctx.lineWidth=1.6;
+  ctx.beginPath();
+  ctx.moveTo(ax,ay);
+  ctx.lineTo(ax+Math.cos(minAngle)*analogR*0.82, ay+Math.sin(minAngle)*analogR*0.82);
+  ctx.stroke();
+
+  // center pivot
+  ctx.fillStyle='#5c5cff';
+  ctx.beginPath(); ctx.arc(ax,ay,2.2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#e8eaff';
+  ctx.beginPath(); ctx.arc(ax,ay,1,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+
+  // right side: digital readout
+  const rx = x + w*0.52;
+  const rw = w*0.45;
+
+  // label
+  ctx.fillStyle='rgba(140,150,200,0.8)';
+  ctx.font=`600 ${Math.max(7,Math.round(w*0.06))}px 'Rajdhani',sans-serif`;
+  ctx.textAlign='center';
+  ctx.textBaseline='top';
+  ctx.fillText('HORA LOCAL', rx+rw/2, y+h*0.10);
+
+  // digital time
+  const timeStr=formatTime(Math.round(state.minuteOfDay));
+  ctx.save();
+  ctx.shadowColor='#5c5cff';
+  ctx.shadowBlur=8;
+  ctx.fillStyle='#e8eaff';
+  ctx.font=`bold ${Math.round(w*0.16)}px 'JetBrains Mono',monospace`;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  // blinking colon
+  const blink = Math.floor(heatPhase/30)%2===0;
+  const dispStr = blink ? timeStr : timeStr.replace(':',' ');
+  ctx.fillText(dispStr, rx+rw/2, y+h*0.46);
+  ctx.restore();
+
+  // period label
+  const h2=state.minuteOfDay/60;
+  let periodLbl='NOITE', periodCol='rgba(120,125,180,0.85)';
+  if(h2>=5&&h2<8){ periodLbl='AMANHECER'; periodCol='rgba(240,140,60,0.95)'; }
+  else if(h2>=8&&h2<12){ periodLbl='MANHÃ'; periodCol='rgba(240,200,80,0.85)'; }
+  else if(h2>=12&&h2<17){ periodLbl='TARDE'; periodCol='rgba(255,180,60,0.85)'; }
+  else if(h2>=17&&h2<20){ periodLbl='ENTARDECER'; periodCol='rgba(220,90,50,0.95)'; }
+
+  ctx.fillStyle=periodCol;
+  ctx.font=`600 ${Math.max(7,Math.round(w*0.06))}px 'Rajdhani',sans-serif`;
+  ctx.textAlign='center';
+  ctx.textBaseline='bottom';
+  ctx.fillText(periodLbl, rx+rw/2, y+h*0.88);
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
+// ── horizon glow / fog ───────────────────────────────
+function drawHorizonFog(minute){
+  const h=minute/60;
+  const groundY=H*0.68;
+  const sol=solarFactor(minute);
+  const isDawn=h>=5.5&&h<=8;
+  const isDusk=h>=17.5&&h<=20.5;
+
+  if(isDawn||isDusk){
+    const t2=isDawn?clamp((h-5.5)/2.5,0,1):clamp((h-17.5)/3,0,1);
+    const intensity=isDawn?clamp(1-Math.abs(t2-0.4)/0.6,0,1):clamp(1-Math.abs(t2-0.5)/0.5,0,1);
+    const hg=ctx.createLinearGradient(0,groundY-H*0.12,0,groundY);
+    const col=isDawn?`rgba(240,140,60,${intensity*0.35})`:`rgba(220,80,30,${intensity*0.30})`;
+    hg.addColorStop(0,'rgba(0,0,0,0)');
+    hg.addColorStop(1,col);
+    ctx.fillStyle=hg;
+    ctx.fillRect(0,groundY-H*0.12,W,H*0.12);
+  }
+}
+
+// ── main draw scene ──────────────────────────────────
+function drawScene(minute){
+  if(!W||!H) return;
+  heatPhase++;
+
+  ctx.clearRect(0,0,W,H);
+  drawSkyGradient(minute);
+  drawStars(minute);
+  drawClouds(minute);
+  drawSun(minute);
+  drawMoon(minute);
+  drawMountains(minute);
+  drawHorizonFog(minute);
+  drawTrees(minute);
+  drawGround(minute);
+  const houseInfo = drawHouse(minute);
+  drawInfoCard();
+  drawAlertOverlay();
+}
+
+// ── Canvas overlay: info card (top-left) ─────────────
+function drawInfoCard(){
+  const pad = 12, cw = 188, ch = 90;
+  const cx = pad, cy = pad;
+  const te = state.tExt, tf = state.tFeel;
+  const h2 = state.minuteOfDay/60;
+
+  // backdrop
+  ctx.save();
+  ctx.globalAlpha = 0.88;
+  ctx.fillStyle = '#08080f';
+  roundRect(ctx, cx, cy, cw, ch, 5);
+  ctx.fill();
+  ctx.restore();
+
+  // border
+  const ledColor = te<24?'#38c8f0': te<28?'#2ecc71': te<34?'#f0b429': te<38?'#ff7043':'#ff3c3c';
+  ctx.strokeStyle = ledColor;
+  ctx.lineWidth = 1;
+  ctx.globalAlpha = 0.55;
+  roundRect(ctx, cx, cy, cw, ch, 5);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+
+  // corner brackets
+  drawCornerBrackets(cx+4, cy+4, cw-8, ch-8, 'rgba(92,92,255,0.4)');
+
+  // label row
+  ctx.fillStyle = 'rgba(140,150,200,0.85)';
+  ctx.font = "600 9px 'Rajdhani',sans-serif";
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('TEMPERATURA EXTERNA', cx+10, cy+9);
+
+  // time label right
+  ctx.textAlign = 'right';
+  ctx.fillText(formatTime(Math.round(state.minuteOfDay)), cx+cw-10, cy+9);
+
+  // main temp LED
+  ctx.save();
+  ctx.shadowColor = ledColor;
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = ledColor;
+  ctx.font = "bold 32px 'JetBrains Mono',monospace";
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(te.toFixed(1)+'°', cx+10, cy+48);
+  ctx.restore();
+
+  // clock — analog mini right side
+  const ax = cx + cw - 28, ay = cy + ch/2;
+  const ar = 18;
+  ctx.fillStyle = '#04050a';
+  ctx.beginPath(); ctx.arc(ax,ay,ar+1,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle = 'rgba(92,92,255,0.45)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(ax,ay,ar,0,Math.PI*2); ctx.stroke();
+  // ticks
+  for(let i=0;i<12;i++){
+    const a = i*Math.PI/6 - Math.PI/2;
+    const r1 = ar*0.82, r2 = ar*0.96;
+    ctx.strokeStyle = i%3===0?'rgba(200,205,232,0.9)':'rgba(100,105,150,0.5)';
+    ctx.lineWidth = i%3===0?1.2:0.7;
+    ctx.beginPath();
+    ctx.moveTo(ax+Math.cos(a)*r1, ay+Math.sin(a)*r1);
+    ctx.lineTo(ax+Math.cos(a)*r2, ay+Math.sin(a)*r2);
+    ctx.stroke();
+  }
+  const hourA = ((state.minuteOfDay/60)%12)/12*Math.PI*2 - Math.PI/2;
+  const minA  = (state.minuteOfDay%60)/60*Math.PI*2 - Math.PI/2;
+  ctx.strokeStyle = '#e8eaff'; ctx.lineWidth = 1.8; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(ax+Math.cos(hourA)*ar*0.55, ay+Math.sin(hourA)*ar*0.55); ctx.stroke();
+  ctx.strokeStyle = '#5c5cff'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(ax+Math.cos(minA)*ar*0.80, ay+Math.sin(minA)*ar*0.80); ctx.stroke();
+  ctx.fillStyle = '#5c5cff';
+  ctx.beginPath(); ctx.arc(ax,ay,2,0,Math.PI*2); ctx.fill();
+
+  // feels-like + period bottom row
+  let periodLbl='Noite', periodCol='rgba(130,135,190,0.9)';
+  if(h2>=5&&h2<8)        { periodLbl='Amanhecer'; periodCol='rgba(240,140,60,0.95)'; }
+  else if(h2>=8&&h2<12)  { periodLbl='Manhã';     periodCol='rgba(240,200,80,0.9)'; }
+  else if(h2>=12&&h2<17) { periodLbl='Tarde';     periodCol='rgba(255,180,60,0.9)'; }
+  else if(h2>=17&&h2<20) { periodLbl='Entardecer';periodCol='rgba(220,90,50,0.95)'; }
+
+  ctx.fillStyle = 'rgba(150,155,200,0.8)';
+  ctx.font = "9px 'JetBrains Mono',monospace";
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('SENS '+tf.toFixed(1)+'°C', cx+10, cy+ch-8);
+  ctx.fillStyle = periodCol;
+  ctx.font = "600 9px 'Rajdhani',sans-serif";
+  ctx.textAlign = 'right';
+  ctx.fillText(periodLbl.toUpperCase(), cx+cw-10, cy+ch-8);
+}
+
+// ── Canvas overlay: alert (bottom-left) ──────────────
+function drawAlertOverlay(){
+  const inefficient = state.heatGain > state.coolingCap && state.tInt > 26;
+  if(!inefficient) return;
+
+  const pad = 12;
+  const aw = 188;
+  const ah = 42;
+  const ax2 = pad;
+  const ay2 = H - pad - ah;
+
+  // soft red glow halo (outer)
+  const pulse = 0.7 + 0.3 * Math.sin(heatPhase * 0.08);
+  ctx.save();
+  ctx.globalAlpha = pulse * 0.22;
+  ctx.fillStyle = '#ff3c3c';
+  roundRect(ctx, ax2 - 4, ay2 - 4, aw + 8, ah + 8, 6);
+  ctx.fill();
+  ctx.restore();
+
+  // solid black card
+  ctx.save();
+  ctx.fillStyle = '#000';
+  roundRect(ctx, ax2, ay2, aw, ah, 4);
+  ctx.fill();
+  // red border
+  ctx.strokeStyle = '#ff3c3c';
+  ctx.lineWidth = 1;
+  roundRect(ctx, ax2, ay2, aw, ah, 4);
+  ctx.stroke();
+  // inner border highlight
+  ctx.strokeStyle = 'rgba(255,60,60,0.25)';
+  ctx.lineWidth = 1;
+  roundRect(ctx, ax2 + 2, ay2 + 2, aw - 4, ah - 4, 3);
+  ctx.stroke();
+  ctx.restore();
+
+  // title (bright red on black — maximum contrast)
+  ctx.save();
+  ctx.fillStyle = '#ff3c3c';
+  ctx.font = "bold 10px 'Rajdhani',sans-serif";
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('⚠  SISTEMA INCAPAZ DE RESFRIAR', ax2 + 10, ay2 + 8);
+
+  // deficit info
+  const deficit = Math.round(state.heatGain - state.coolingCap);
+  const pct = Math.round(deficit / Math.max(state.coolingCap, 1) * 100);
+  ctx.fillStyle = '#ffb0b0';
+  ctx.font = "9px 'JetBrains Mono',monospace";
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(`Déficit: ${deficit}W  ·  +${pct}%`, ax2 + 10, ay2 + ah - 8);
+  ctx.restore();
+}
+
+// ═══════════════════════════════════════════════════════
+//  MINI CHART
+// ═══════════════════════════════════════════════════════
+const mc = $('mini-chart');
+const mcCtx = mc.getContext('2d');
+
+function drawMiniChart(){
+  const W=mc.width=mc.parentElement.clientWidth-32;
+  const H=mc.height=70;
+  mcCtx.clearRect(0,0,W,H);
+
+  const tpeak=parseFloat($('inp-tpeak').value)||38;
+  const tmin=parseFloat($('inp-tmin').value)||22;
+
+  // draw external and internal curves
+  const pts=[];
+  for(let m=0;m<=1440;m+=30){
+    const te=externalTemp(m);
+    const tx=m/1440*W;
+    const ty=H-((te-tmin)/(tpeak+5-tmin))*H;
+    pts.push([tx,ty]);
+  }
+  mcCtx.strokeStyle='rgba(240,180,40,0.6)';
+  mcCtx.lineWidth=1.5;
+  mcCtx.beginPath();
+  pts.forEach(([x,y],i)=>i===0?mcCtx.moveTo(x,y):mcCtx.lineTo(x,y));
+  mcCtx.stroke();
+
+  // 24°C comfort line
+  const cy=H-((24-tmin)/(tpeak+5-tmin))*H;
+  mcCtx.strokeStyle='rgba(46,204,113,0.4)';
+  mcCtx.setLineDash([4,4]);
+  mcCtx.lineWidth=1;
+  mcCtx.beginPath();
+  mcCtx.moveTo(0,cy);
+  mcCtx.lineTo(W,cy);
+  mcCtx.stroke();
+  mcCtx.setLineDash([]);
+
+  // current time cursor
+  const cx2=state.minuteOfDay/1440*W;
+  mcCtx.strokeStyle='rgba(92,92,255,0.8)';
+  mcCtx.lineWidth=1.5;
+  mcCtx.beginPath();
+  mcCtx.moveTo(cx2,0);
+  mcCtx.lineTo(cx2,H);
+  mcCtx.stroke();
+
+  // labels
+  mcCtx.fillStyle='rgba(90,94,128,0.9)';
+  mcCtx.font='9px JetBrains Mono,monospace';
+  mcCtx.fillText('00',2,H-2);
+  mcCtx.fillText('06',W*6/24-6,H-2);
+  mcCtx.fillText('12',W*12/24-6,H-2);
+  mcCtx.fillText('18',W*18/24-6,H-2);
+  mcCtx.fillText('24',W-14,H-2);
+}
+
+// ═══════════════════════════════════════════════════════
+//  DASHBOARD UPDATE
+// ═══════════════════════════════════════════════════════
+function tempColorClass(t){
+  if(t < 20) return 't-cold';
+  if(t < 24) return 't-ok';
+  if(t < 29) return 't-warm';
+  if(t < 34) return 't-hot';
+  return 't-crit';
+}
+
+function updateDash(){
+  const te=state.tExt, ti=state.tInt, tf=state.tFeel;
+  const hg=state.heatGain, cc=state.coolingCap;
+
+  $('d-text').innerHTML=`<span class="${tempColorClass(te)}">${te.toFixed(1)}</span><span class="unit">°C</span>`;
+  const h=state.minuteOfDay/60;
+  $('d-text-sub').textContent= h>=6&&h<=20 ? `☀ Período solar — sol: ${(solarFactor(state.minuteOfDay)*100).toFixed(0)}%` : '🌙 Período noturno';
+
+  $('d-tint').innerHTML=`<span class="${tempColorClass(ti)}">${ti.toFixed(1)}</span><span class="unit">°C</span>`;
+  const tBar=clamp((ti-10)/50*100,0,100);
+  const barColor= ti<24?'var(--green)': ti<30?'var(--gold)':'var(--red)';
+  $('d-tint-bar').style.width=tBar+'%';
+  $('d-tint-bar').style.background=barColor;
+
+  $('d-feel').innerHTML=`<span class="${tempColorClass(tf)}">${tf.toFixed(1)}</span><span class="unit">°C</span>`;
+  const comfortLabel=tf<18?'❄ Frio':tf<24?'✓ Confortável':tf<29?'~ Levemente quente':tf<34?'! Quente':'⚠ Muito quente';
+  $('d-feel-sub').textContent=comfortLabel;
+
+  $('d-hum').innerHTML=`${state.humidity.toFixed(0)}<span class="unit">%</span>`;
+  $('d-hum-bar').style.width=state.humidity+'%';
+  const humColor=state.humidity<60?'var(--cyan)':state.humidity<80?'var(--gold)':'var(--red)';
+  $('d-hum-bar').style.background=humColor;
+
+  $('d-load').innerHTML=`${Math.round(hg)}<span class="unit">W</span>`;
+  $('d-load-sub').textContent=`☀ Solar: ${Math.round(state.solarGain||0)}W  |  🏠 Cond: ${Math.round(state.condGain||0)}W`;
+
+  $('d-cap').innerHTML=`${Math.round(cc)}<span class="unit">W</span>`;
+  const capRatio=clamp(cc/Math.max(hg,1)*100,0,100);
+  $('d-cap-bar').style.width=capRatio+'%';
+  $('d-cap-bar').style.background=capRatio>=100?'var(--green)':capRatio>60?'var(--gold)':'var(--red)';
+
+  // Evap cooler live efficiency readout
+  if(state.ev && $('ev-eff-val')){
+    const eff = state.evEff != null ? state.evEff : 0;
+    const effPct = Math.round(eff * 100);
+    $('ev-eff-val').textContent = effPct+'%';
+    $('ev-eff-bar').style.width = effPct+'%';
+    const ec = effPct > 60?'var(--cyan)': effPct > 30?'var(--gold)':'var(--red)';
+    $('ev-eff-bar').style.background = ec;
+    const twb = state.Twb != null ? state.Twb.toFixed(1)+'°C' : '—';
+    const dep = state.Twb != null ? (state.tInt - state.Twb).toFixed(1) : '—';
+    $('ev-twb-line').textContent = `T° bulbo úmido: ${twb}  (depressão ${dep}°C)`;
+    // Color the label if near-zero efficiency
+    $('ev-twb-line').style.color = effPct < 15 ? 'var(--red)' : 'var(--text-dim)';
+  }
+
+  // ETA
+  if(ti <= 24){
+    $('d-eta').textContent='—';
+    $('d-eta-sub').textContent='Temperatura já confortável';
+  } else if(state.etaMin != null){
+    if(state.etaMin < 60){
+      $('d-eta').textContent=Math.round(state.etaMin)+' min';
+    } else {
+      $('d-eta').textContent=(state.etaMin/60).toFixed(1)+' h';
+    }
+    $('d-eta-sub').textContent='para atingir 24°C';
+  } else {
+    $('d-eta').textContent='∞';
+    $('d-eta-sub').textContent='Incapaz de atingir 24°C';
+  }
+
+  // alert is now drawn on canvas via drawAlertOverlay()
+
+  // Status badges
+  const stEl = $('sim-status');
+  if(state.playing){
+    stEl.textContent = '● RODANDO';
+    stEl.className = 'hdr-tag live';
+  } else {
+    stEl.textContent = '● PAUSADO';
+    stEl.className = 'hdr-tag';
+  }
+  // Speed in header
+  const hsp = $('hdr-speed');
+  hsp.textContent = '⚡ '+formatSpeed(state.speed);
+  hsp.className = 'hdr-tag' + (state.speed>60?' warp':'');
+}
+
+// ═══════════════════════════════════════════════════════
+//  TIME CONTROL
+// ═══════════════════════════════════════════════════════
+function togglePlay(){
+  state.playing = !state.playing;
+  $('play-btn').textContent = state.playing ? '❚❚' : '▶';
+  if(state.playing) lastTime=null;
+}
+
+// Continuous speed mapping: slider 0..100 → speed 1× .. 600× (exponential)
+// 0   = 1×    (tempo real puro)
+// 25  ≈ 8×
+// 50  ≈ 60×   (1 dia em ~24 min)
+// 75  ≈ 220×
+// 100 = 600×  (1 dia em ~2.4 min)
+function speedFromSlider(v){
+  if(v<=0) return 1.0;
+  // exponential: speed = 1 * (600)^(v/100)
+  return Math.pow(600, v/100);
+}
+
+function formatSpeed(s){
+  if(s < 10)  return s.toFixed(1)+'×';
+  if(s < 100) return Math.round(s)+'×';
+  return Math.round(s)+'×';
+}
+
+function updateSpeedReadout(){
+  const r = $('speed-readout');
+  r.textContent = formatSpeed(state.speed);
+  r.classList.remove('realtime','fast','warp');
+  if(state.speed <= 2)      r.classList.add('realtime');
+  else if(state.speed <= 60) r.classList.add('fast');
+  else                       r.classList.add('warp');
+}
+
+function resetSpeed(){
+  state.speedSliderVal = 0;
+  state.speed = 1.0;
+  $('speed-range').value = 0;
+  updateSpeedReadout();
+}
+
+$('speed-range').addEventListener('input', e=>{
+  state.speedSliderVal = +e.target.value;
+  state.speed = speedFromSlider(state.speedSliderVal);
+  updateSpeedReadout();
+});
+
+$('time-range').addEventListener('input', e=>{
+  state.minuteOfDay = +e.target.value;
+  // When scrubbing, reset internal temp toward external (cold-start at new time)
+  state.tInt = externalTemp(state.minuteOfDay);
+});
+
+// Inject time ticks (every 6h) and speed ticks
+function injectTicks(){
+  const tm = document.querySelector('.time-marks');
+  [0,6,12,18,24].forEach(h=>{
+    const pct = h/24*100;
+    const tk=document.createElement('div');
+    tk.className='time-tick';
+    tk.style.left=pct+'%';
+    tm.appendChild(tk);
+    const lbl=document.createElement('div');
+    lbl.className='time-tick-lbl';
+    lbl.style.left=pct+'%';
+    lbl.textContent=String(h).padStart(2,'0')+'h';
+    if(h===0)  { lbl.style.left='0%'; lbl.style.transform='translateX(0)'; }
+    if(h===24) { lbl.style.left='100%'; lbl.style.transform='translateX(-100%)'; }
+    tm.appendChild(lbl);
+  });
+
+  const sw = document.querySelector('.speed-slider-wrap');
+  // tick positions for 1× / 8× / 60× / 220× / 600×
+  const speedTicks = [
+    {pct:0,    lbl:'1×'},
+    {pct:25,   lbl:'8×'},
+    {pct:50,   lbl:'60×'},
+    {pct:75,   lbl:'220×'},
+    {pct:100,  lbl:'600×'},
+  ];
+  speedTicks.forEach(({pct,lbl})=>{
+    const tk=document.createElement('div');
+    tk.className='speed-tick';
+    tk.style.left=pct+'%';
+    sw.appendChild(tk);
+    const ll=document.createElement('div');
+    ll.className='speed-tick-lbl';
+    ll.style.left=pct+'%';
+    ll.textContent=lbl;
+    if(pct===0)   { ll.style.left='0%';   ll.style.transform='translateX(0)'; }
+    if(pct===100) { ll.style.left='100%'; ll.style.transform='translateX(-100%)'; }
+    sw.appendChild(ll);
+  });
+}
+injectTicks();
+updateSpeedReadout();
+
+function formatTime(m){
+  const hh=Math.floor(m/60).toString().padStart(2,'0');
+  const mm=(m%60).toString().padStart(2,'0');
+  return hh+':'+mm;
+}
+
+// ═══════════════════════════════════════════════════════
+//  MAIN LOOP
+// ═══════════════════════════════════════════════════════
+function loop(ts){
+  animFrame = requestAnimationFrame(loop);
+
+  if(state.playing){
+    if(!lastTime) lastTime=ts;
+    const dtReal=(ts-lastTime)/1000; // seconds
+    lastTime=ts;
+    // 1 real second = speed * 1 simulated minute
+    const dtSim = dtReal * state.speed;
+    state.minuteOfDay = (state.minuteOfDay + dtSim) % 1440;
+    $('time-range').value = Math.round(state.minuteOfDay);
+    runPhysics(dtSim);
+  } else {
+    lastTime = null;
+    // Still run physics at current time for dashboard updates
+    runPhysics(0.1);
+  }
+
+  $('time-disp').textContent = formatTime(Math.round(state.minuteOfDay));
+  drawScene(state.minuteOfDay);
+  drawMiniChart();
+  updateDash();
+}
+
+// Init — start at amanhecer (06:00)
+state.tInt = externalTemp(360);
+$('time-range').value = 360;
+$('time-disp').textContent = '06:00';
+animFrame = requestAnimationFrame(loop);
+
+// Input changes → re-calc on next frame (natural)
+document.querySelectorAll('input[type=number]').forEach(el=>{
+  el.addEventListener('change', ()=>{ state.tInt = externalTemp(state.minuteOfDay); });
+});
+</script>
+</body>
+</html>
